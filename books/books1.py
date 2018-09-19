@@ -16,7 +16,7 @@ with open(sys.argv[1], 'r', encoding='utf-8') as csv_file:
         for i in books:
             print(i)
 
-    if sys.argv[2] == "authors":
+    elif sys.argv[2] == "authors":
         authors = []
         for line in csv_reader:
             authors.append(line[2])
