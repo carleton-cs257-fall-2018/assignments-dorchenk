@@ -4,20 +4,25 @@
 import csv
 import sys
 
-with open('books.csv', 'r', encoding='utf-8') as csv_file:
+with open(sys.argv[1], 'r', encoding='utf-8') as csv_file:
     csv_reader = csv.reader(csv_file)
 
 
-    if sys.argv[1] == "books":
-        books= []
+    if sys.argv[2] == "books":
+        books = []
         for line in csv_reader:
             books.append(line[0])
         books.sort()
-        print (books)
+        for i in books:
+            print(i)
 
-    if sys.argv[1] == "authors":
-        authors=[]
+    if sys.argv[2] == "authors":
+        authors = []
         for line in csv_reader:
             authors.append(line[2])
         authors.sort()
-        print (authors)
+        for i in authors:
+            print(i)
+
+    else:
+        print("Usage: python3 books1.py input-file action [sort direction]", file=sys.stderr)
