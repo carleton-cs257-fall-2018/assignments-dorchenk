@@ -27,8 +27,8 @@ with open("books.csv", 'r', encoding='utf-8') as csv_file:
             authors.append(line[2])
         
         if sys.argv[2] == "forward":
+            authors.sort()
             #print (authors)
-
             for i in authors:
                 print (i)
             
