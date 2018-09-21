@@ -8,27 +8,27 @@ import primechecker
 import unittest
 import booksdatasource
 
-class BooksDataSource(unittest.TestCase):
+class BooksDataSourceTester(unittest.TestCase):
     def setUp(self):
         self.prime_checker = primechecker.PrimeChecker(100)
 
     def tearDown(self):
         pass
 
-    def test_zero(self):
-        self.assertRaises(ValueError, self.prime_checker.is_prime, 0)
+    def test_ID(self):
+        self.assertRaises(self.book, self)
 
-    def test_two(self):
-        self.assertTrue(self.prime_checker.is_prime(2))
+    def test_authors(self):
+        self.assertTrue(self.books)
 
-    def test_prime(self):
-        self.assertTrue(self.prime_checker.is_prime(97))
+    def test_authorsForBook(self):
+        self.assertTrue()
 
-    def test_composite(self):
-        self.assertFalse(self.prime_checker.is_prime(96))
+    def test_authorsForYear(self):
+        self.assertFalse()
 
-    def test_primes_below(self):
-        self.assertEqual(self.prime_checker.get_primes_below(20), [2, 3, 5, 7, 11, 13, 17, 19])
+    def test_authorsforbirth(self):
+        self.assertEqual(self.authors(null, null,null,null, (1819)))
 
 if __name__ == '__main__':
     unittest.main()
