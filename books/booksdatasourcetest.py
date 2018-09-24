@@ -1,22 +1,20 @@
 '''
-   primecheckertests.py
-   Jeff Ondich, 9 May 2012
-   Updated for use in a lab exercise, 4 Nov 2013
+   booksdatasourcetest.py
+   Addison Partida
+   Javin White
+   Kellen Dorchen
+   September 21 2018
 '''
 
-import primechecker
 import unittest
 import booksdatasource
 
 class BooksDataSourceTester(unittest.TestCase):
     def setUp(self):
-        self.prime_checker = primechecker.PrimeChecker(100)
-
-    def tearDown(self):
-        pass
+        self.data_source = booksdatasource.BooksDataSource("books.csv", "author.csv.", "author", "books_authors", "author_test")
 
     def test_ID(self):
-        self.assertRaises(self.book, self)
+        self.assertRaises(ValueError, self.data_source.books, author_id = -1)
 
     def test_authors(self):
         self.assertTrue(self.books)
