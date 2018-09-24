@@ -11,9 +11,9 @@ import booksdatasource
 
 class BooksDataSourceTester(unittest.TestCase):
     def setUp(self):
-        self.data_source = booksdatasource.BooksDataSource("books.csv", "author.csv.", "author", "books_authors", "author_test")
+        self.data_source = booksdatasource.BooksDataSource("books_test.csv", "author_test.csv.", "books_authors_test.csv")
 
-    def test_ID(self):
+    def test_neg_ID(self):
         self.assertRaises(ValueError, self.data_source.books, author_id = -1)
 
     def test_authors(self):
