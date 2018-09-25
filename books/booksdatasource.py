@@ -93,7 +93,7 @@ class BooksDataSource:
 				book_dict = {'id': book[0], 'title': book[1], 'publication_year': book[2]}
 				self.books_list.append(book_dict)
 				
-# 			for i in books_list:
+# 			for i in self.books_list:
 # 				print(i)
 				
 		#making authors
@@ -105,7 +105,7 @@ class BooksDataSource:
 				author_dict = {'id': author[0], 'last_name': author[1], 'first_name': author[2], 'birth_year': author[3], 'death_year' : author[4]}
 				self.authors_list.append(author_dict)
 				
-# 			for i in authors_list:
+# 			for i in self.authors_list:
 # 				print(i)
 				
 		#making link
@@ -157,35 +157,40 @@ class BooksDataSource:
 		search_list = []
 		link_list = []
 		if author_id != None:
-			#see if possible to use book method
 			for book_link in self.link_dict:
-				if self.link_dict[book_link] == author_id:
-					link_list.append(book_link)
+				if len(self.link_dict[book_link]) > 1:
+					for i in self.link_dict[book_link]:
+						if i == author_id:
+							link_list.append(book_link)
+				else:
+					for i in self.link_dict[book_link]:
+						if i == author_id:
+							link_list.append(book_link)
 			for book in self.books_list:
 				for link in link_list:
 					if book['id'] == link:
 						search_list.append(book)
 		if search_text != None:
-			if len(search_list) == 0:
+			if len(search_list) == 0 and author_id == None:
 				search_list = self.books_list
 			search_list = [book for book in search_list if search_text in book['title'].lower()]
 		if start_year != None:
-			if len(search_list) == 0:
+			if len(search_list) == 0 and author_id == None and search_text == None:
 				search_list = self.books_list
 			search_list = [book for book in search_list if book['publication_year'] >= start_year]
 		if end_year != None:
-			if len(search_list) == 0:
+			if len(search_list) == 0 and author_id == None and search_text == None and start_year == None:
 				search_list = self.books_list
 			search_list = [book for book in search_list if book['publication_year'] <= end_year]
 		if sort_by == 'title':
-			if len(search_list) == 0:
+			if len(search_list) == 0 and author_id == None and search_text == None and start_year == None and end_year == None:
 				search_list = self.books_list
 			books_title_list = []
 			for book in search_list:
 				books_title_list.append(book['title'])
 			books_title_list.sort()
 		elif sort_by == 'year':
-			if len(search_list) == 0:
+			if len(search_list) == 0 and author_id == None and search_text == None and start_year == None and end_year == None:
 				search_list = self.books_list
 			temp_list = []
 			books_title_list = []
@@ -262,7 +267,7 @@ class BooksDataSource:
 		if search_text != None:
 			if len(search_list) == 0 and book_id == None:
 				search_list = self.authors_list
-			search_list = [author for author in search_list if search_text in author['last_name'].lower() or author['first_name'].lower()]
+			search_list = [author for author in search_list if search_text in author['last_name'].lower() or search_text in author['first_name'].lower()]
 		if start_year != None:
 			if len(search_list) == 0 and book_id == None and search_text == None:
 				search_list = self.authors_list
@@ -315,12 +320,12 @@ class BooksDataSource:
 	def authors_for_book(self, book_id):
 		''' Returns a list of all the authors of the book with the specified book ID.
 		See the BooksDataSource comment for a description of how an author is represented. '''
-		return self.books(book_id=book_id)
+		return self.authors(book_id=book_id)
 
 testing = BooksDataSource("books_new.csv", "authors.csv", "books_authors.csv")
 #print(testing.book('4'))
 #print(testing.author('5'))
-#testing.books(author_id = '4', search_text='ma', start_year='1815', end_year='1815')
+#print(testing.books(author_id ='20', start_year='1815',sort_by='year'))
 #print(testing.books(sort_by='year'))
-print(testing.authors(book_id='0', search_text='is'))
+print(testing.authors(book_id='31', search_text='h'))
 
