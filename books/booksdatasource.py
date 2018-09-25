@@ -78,13 +78,11 @@ class BooksDataSource:
 		NOTE TO STUDENTS: I have not specified how you will store the books/authors
 		data in a BooksDataSource object. That will be up to you, in Phase 3.
 		'''
-		#pass
 
 		books_file = books_filename
 		authors_file = authors_filename
 		books_authors_file = books_authors_link_filename
 		
-		#making books
 		with open(books_file, 'r', encoding='utf-8') as books_file:
 			books_file = csv.reader(books_file)
 			self.books_list = []
@@ -93,10 +91,6 @@ class BooksDataSource:
 				book_dict = {'id': book[0], 'title': book[1], 'publication_year': book[2]}
 				self.books_list.append(book_dict)
 				
-# 			for i in self.books_list:
-# 				print(i)
-				
-		#making authors
 		with open(authors_file, 'r', encoding='utf-8') as authors_file:
 			authors_file = csv.reader(authors_file)
 			self.authors_list = []
@@ -105,10 +99,6 @@ class BooksDataSource:
 				author_dict = {'id': author[0], 'last_name': author[1], 'first_name': author[2], 'birth_year': author[3], 'death_year' : author[4]}
 				self.authors_list.append(author_dict)
 				
-# 			for i in self.authors_list:
-# 				print(i)
-				
-		#making link
 		with open(books_authors_file, 'r', encoding='utf-8') as books_authors_file:
 			books_authors_file = csv.reader(books_authors_file)
 
@@ -118,20 +108,18 @@ class BooksDataSource:
 					self.link_dict[pair[0]].append(pair[1])
 				else:
 					self.link_dict[pair[0]] = [pair[1]]
-#			print(self.link_dict)
-# 			for link in self.link_dict:
-# 				print(self.link_dict[link])
 				
 	def book(self, book_id):
 		''' Returns the book with the specified ID. (See the BooksDataSource comment
 		for a description of how a book is represented.) '''
 		return_dict = {}
-		book_id_to_search = book_id
-		for dict in self.books_list:
-			#print(dict)
-			if dict['id'] == book_id_to_search:
-				#print(book_id_to_search)
-				return_dict = {book_id_to_search:dict['title']}
+		if book_id > '0':
+			book_id_to_search = book_id
+			for dict in self.books_list:
+				if dict['id'] == book_id_to_search:
+					return_dict = {book_id_to_search:dict['title']}
+		else:
+			raise ValueError("ID cannot be negative number")
 		return return_dict
 
 	def books(self, *, author_id=None, search_text=None, start_year=None, end_year=None, sort_by='title'):
@@ -157,19 +145,22 @@ class BooksDataSource:
 		search_list = []
 		link_list = []
 		if author_id != None:
-			for book_link in self.link_dict:
-				if len(self.link_dict[book_link]) > 1:
-					for i in self.link_dict[book_link]:
-						if i == author_id:
-							link_list.append(book_link)
-				else:
-					for i in self.link_dict[book_link]:
-						if i == author_id:
-							link_list.append(book_link)
-			for book in self.books_list:
-				for link in link_list:
-					if book['id'] == link:
-						search_list.append(book)
+			if author_id > '0':
+				for book_link in self.link_dict:
+					if len(self.link_dict[book_link]) > 1:
+						for i in self.link_dict[book_link]:
+							if i == author_id:
+								link_list.append(book_link)
+					else:
+						for i in self.link_dict[book_link]:
+							if i == author_id:
+								link_list.append(book_link)
+				for book in self.books_list:
+					for link in link_list:
+						if book['id'] == link:
+							search_list.append(book)
+			else:
+				raise ValueError("ID cannot be negative number")
 		if search_text != None:
 			if len(search_list) == 0 and author_id == None:
 				search_list = self.books_list
@@ -208,10 +199,13 @@ class BooksDataSource:
 		''' Returns the author with the specified ID. (See the BooksDataSource comment for a
 		description of how an author is represented.) '''
 		return_dict = {} 
-		author_id_to_search = author_id
-		for author in self.authors_list:
-			if author['id'] == author_id_to_search:
-				return_dict = {author_id_to_search:author['first_name'] + " " + author['last_name']}
+		if author_id > '0':
+			author_id_to_search = author_id
+			for author in self.authors_list:
+				if author['id'] == author_id_to_search:
+					return_dict = {author_id_to_search:author['first_name'] + " " + author['last_name']}
+		else:
+			raise ValueError("ID cannot be negative number")
 		return return_dict
 
 	def authors(self, *, book_id=None, search_text=None, start_year=None, end_year=None, sort_by='birth_year'):
@@ -243,27 +237,23 @@ class BooksDataSource:
 		link_list = []
 		temp_link_list = []
 		if book_id != None:
-			for book_link in self.link_dict:
-#				print(self.link_dict)
-				if book_link == book_id:
-					#print(book_link)
-					temp_link_list.append(self.link_dict[book_link])
-			for link in temp_link_list:
-				if len(link) > 1:
-					#link.split(',')
-					for i in link:
-						#search_list = self.author(i)
-						link_list.append(i)
-				else:
-					for i in link:
-						#search_list = self.author(i)
-						link_list.append(i)
-			for author in self.authors_list:
-				for link in link_list:
-					#print(link_list)
-					if author['id'] == link:
-						search_list.append(author)
-			#print(search_list)
+			if book_id > '0':
+				for book_link in self.link_dict:
+					if book_link == book_id:
+						temp_link_list.append(self.link_dict[book_link])
+				for link in temp_link_list:
+					if len(link) > 1:
+						for i in link:
+							link_list.append(i)
+					else:
+						for i in link:
+							link_list.append(i)
+				for author in self.authors_list:
+					for link in link_list:
+						if author['id'] == link:
+							search_list.append(author)
+			else:
+				raise ValueError("ID cannot be a negative number")
 		if search_text != None:
 			if len(search_list) == 0 and book_id == None:
 				search_list = self.authors_list
@@ -323,9 +313,10 @@ class BooksDataSource:
 		return self.authors(book_id=book_id)
 
 testing = BooksDataSource("books_new.csv", "authors.csv", "books_authors.csv")
-#print(testing.book('4'))
-#print(testing.author('5'))
-#print(testing.books(author_id ='20', start_year='1815',sort_by='year'))
-#print(testing.books(sort_by='year'))
-print(testing.authors(book_id='31', search_text='h'))
-
+# print(testing.book('4'))
+# print(testing.author('5'))
+# print(testing.books(author_id ='20', start_year='1815',sort_by='year'))
+# print(testing.books(sort_by='year'))
+# print(testing.authors(book_id='31', search_text='h'))
+#print(testing.books_for_author('4'))
+#print(testing.authors_for_book('6'))
