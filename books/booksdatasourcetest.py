@@ -15,27 +15,52 @@ class BooksDataSourceTester(unittest.TestCase):
 
     def tearDown(self):
         pass
+#------------------------------------------------------
+    def test_books_author_id(self):
+        self.assertEqual(self.data_source.books(author_id=13), [])
 
-    def test_books_return(self):
-        self.assertEqual(self.data_source.book(book_id=16), {'title': "Omoo", 'id': '16'})
+    def test_neg_books_id(self):
+        self.assertRaises(ValueError, self.data_source.authors(book_id='-1'))
 
-    def test_neg_ID(self):
-        self.assertRaises(ValueError, self.data_source.books, author_id=-1)
+    def test_books_author_id_returnValue(self):
+        self.assertEqual(self.data_source.books(author_id='13'), ["Moby Dick", "Omoo"])
 
-    def test_author_ID(self):
-        self.raisesEqual(ValueError, self.data_source.author(self, author_id=13))
+    def test_books_search_text(self):
+        self.assertEqual(self.data_source.books(search_text='mo'), ['Moby Dick', 'Omoo'])
 
+    def test_books_start_year(self):
+        self.assertEqual(self.data_source.books(start_year='1922'), ['Good Omens', 'Neverwhere'])
+
+    def test_books_end_year(self):
+        self.assertEqual(self.data_source.books(end_year='1922'), ['Main Street', 'Moby Dick', 'Omoo'])
+
+    def test_books_test_sort_by_year(self):
+        self.assertEqual(self.data_source.books(author_id='13', sort_by='year'), ['Omoo', 'Moby Dick'])
+#------------------------------------------------------
+    def test_neg_author_id(self):
+        self.assertRaises(ValueError, self.data_source.books(author_id='-1'))
+
+    def test_author_id(self):
+        self.assertEqual(self.data_source.author(author_id=10), {})
+
+    def test_author_id_returnValue(self):
+        self.assertEqual(self.data_source.author('10'), {'10': 'Sinclair Lewis'})
+#------------------------------------------------------
+    def test_author(self):
+        self.assertEqual(self.data_source.authors(book_id=13), [])
+#------------------------------------------------------
     def test_authors_for_book(self):
-        self.assertTrue(self.data_source.authors_for_book(self, book_id=6), [])
+        self.assertEqual(self.data_source.authors_for_book(book_id=10), [])
 
-#    def test_authorsForBook(self):
-#        self.assertTrue()
+    def test_books_for_author(self):
+        self.assertEqual(self.data_source.books_for_author(author_id=10), [])
 
-#    def test_authorsForYear(self):
-#        self.assertFalse()
+    def test_authors_for_book_returnValue(self):
+        self.assertEqual(self.data_source.authors_for_book('10'), ["Sinclair Lewis"])
 
-#    def test_authorsforbirth(self):
-#        self.assertEqual(self.data_source.authors((1819)))
+    def test_books_for_author_returnValue(self):
+        self.assertEqual(self.data_source.books_for_author('10'), ["Main Street"])
+#------------------------------------------------------
 
 if __name__ == '__main__':
     unittest.main()
