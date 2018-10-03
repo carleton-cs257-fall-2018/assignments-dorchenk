@@ -1,0 +1,11 @@
+Javin White and Kellen Dorchen
+
+Our dataset is a list of dictionaries with information about countries. The list of dictionaries
+occasionally has a nested list of dictionaries to include information about languages of the 
+country and translations of the country's name. The country dictionaries have details such 
+as name of the country, the capital, region, timezone, borders, etc. It is found at the URL
+https://restcountries.eu. Examples of the output are located on given URL's page and can 
+be viewed by scrolling down the page. 
+
+User story:
+-I want to go to a place that speaks [blank] language.
