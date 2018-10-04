@@ -1,11 +1,22 @@
 Javin White and Kellen Dorchen
 
-Our dataset is a list of dictionaries with information about countries. The list of dictionaries
-occasionally has a nested list of dictionaries to include information about languages of the 
-country and translations of the country's name. The country dictionaries have details such 
-as name of the country, the capital, region, timezone, borders, etc. It is found at the URL
-https://restcountries.eu. Examples of the output are located on given URL's page and can 
-be viewed by scrolling down the page. 
+Our dataset is a list of dictionaries containing information about people who have been
+killed by the police. The dataset has information like the person's name, age, race, ethnicity,
+and the law enforcement agency that killed them. It can be found at:
+https://github.com/fivethirtyeight/data/blob/master/police-killings/police_killings.csv 
+If you follow this exact link, you will be taken directly to our dataset, which we are
+borrowing from FiveThirtyEight's repository on Github. 
 
 User story:
--I want to go to a place that speaks [blank] language.
+As a researcher, I want information about people killed by the police in America.
+As a concerned citizen, I want information about people killed near my house.
+As an African American, I want information about the number of African Americans killed.
+As a young person, I want information about people killed around my age.
+As a murderer, I want to know how they were killed.
+As a parent, I want information about an agency's murder rate.
+As an activist, I want to know if the people killed were armed.
+As an economist, I want to know the average income of the people killed.
+As an astrologist, I want to know the month of when the people died to compare to zodiac information.
+As a researcher, I want to know if women or men are killed more often.
+As a geologist, I would like to the know the exact location of the murders to study the ground 
+where they died.
