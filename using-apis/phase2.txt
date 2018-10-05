@@ -7,10 +7,11 @@ https://github.com/fivethirtyeight/data/blob/master/police-killings/police_killi
 If you follow this exact link, you will be taken directly to our dataset, which we are
 borrowing from FiveThirtyEight's repository on Github. 
 
-User story:
-As a researcher, I want information about people killed by the police in America.
-As a concerned citizen, I want information about people killed near my house.
-As an African American, I want information about the number of African Americans killed.
+User stories:
+As a researcher, I want a list of names of the people killed by police, where they were
+killed, and which law enforcement agency killed them.
+As a concerned citizen, I want a list of people killed near my house.
+As an African American, I want to access the number of African Americans killed.
 As a young person, I want information about people killed around my age.
 As a murderer, I want to know how they were killed.
 As a parent, I want information about an agency's murder rate.
