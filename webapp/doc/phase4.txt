@@ -6,7 +6,7 @@ October 15, 2018
 
 CREATE TABLE person (
 	name TEXT,
-	age INT,
+	age TEXT,
 	gender TEXT,
 	raceethnicity TEXT,
 	month TEXT,
@@ -36,6 +36,7 @@ EXAMPLE: http://whodied.com/people/person/Washington
 {'name': Robert Washington, 'age': 37, 'gender': Male, 'race/ethnicity': Black, 'month': April, 'day': 1, 'year': 2015, 'street_address': 14200 Kornblum Ave, 'city': Hawthorne, 'state': CA, 'latitude': 33.9017922, 'longitude': -118.3373257, 'law_enforcement_agency': Hawthorne Police Department, 'cause': Gunshot, 'armed': No}]
 
 CREATE TABLE age (
+	age TEXT,
 	name TEXT,
 	gender TEXT,
 	raceethnicity TEXT,
@@ -65,7 +66,9 @@ EXAMPLE: http://whodied.com/people/age/16
 {'name': Kendre Alston, 'gender': Male, 'race/ethnicity': Black, 'month': March, 'day': 19, 'year': 2015, 'street_address': 1800 Helena St, 'city': Jacksonville, 'state': FL, 'latitude': 30.3778403, 'longitude': -81.6836172, 'law_enforcement_agency': Jacksonville Sheriff's Office, 'cause': Gunshot, 'armed': Firearm}]
 
 CREATE TABLE city (
+	city TEXT,
 	name TEXT,
+	age TEXT,
 	gender TEXT,
 	raceethnicity TEXT,
 	month TEXT,
@@ -91,7 +94,9 @@ EXAMPLE: http://whodied.com/people/city/Rosenberg
 [{'name': Cody Karasek, 'age': 26, 'gender': Male, 'race/ethnicity': White, 'month': January, 'day': 28, 'year': 2015, 'street_address': 4100 Avenue I, 'state': TX, 'latitude': 29.5576077, 'longitude': -95.7844925, 'law_enforcement_agency': Rosenburg Police Department, 'cause': Gunshot, 'armed': Firearm}]
 
 CREATE TABLE state (
+	state TEXT,
 	name TEXT,
+	age TEXT,
 	gender TEXT,
 	raceethnicity TEXT,
 	month TEXT,
@@ -118,8 +123,10 @@ EXAMPLE: http://whodied.com/people/state/AK
 {'name': Larry Kobuk, 'age': 33, 'gender': Male, 'race/ethnicity': Native American, 'month': January, 'day': 28, 'year': 2015, 'street_address': "Corrections Department, 1400 E 4th Ave", 'city': Anchorage, 'latitude': 61.218408, 'longitude': -149.858016, 'law_enforcement_agency': Anchorage Corrections Department, 'cause': Death in custody, 'armed': Knife}]
 
 CREATE TABLE date (
+	month TEXT,
+	day INT,
 	name TEXT,
-	age INT,
+	age TEXT,
 	gender TEXT,
 	raceethnicity TEXT,
 	month TEXT,
@@ -147,8 +154,9 @@ EXAMPLE: http://whodied.com/people/date/February/14
 {'name':Roy Day, 'age': 51, 'gender': Male, 'race/ethnicity': White, 'year': 2015, 'street_address': Gale St, 'city': Laredo, 'state': TX, 'latitude': 27.554155, 'longitude': -99.478091, 'law_enforcement_agency': Laredo Police Department, 'cause': Gunshot, 'armed': Knife}]
 
 CREATE TABLE raceethnicity (
+	raceethnicity TEXT,
 	name TEXT,
-	age INT,
+	age TEXT,
 	gender TEXT,
 	month TEXT,
 	day INT,
