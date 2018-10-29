@@ -68,6 +68,7 @@ class WriteFile:
 								}
 
 				self.person_list.append(person_dict)
+				
 				#WriteFile.write_person_file(self)
 				age_dict = {
 					'age': person[1],
@@ -125,7 +126,7 @@ class WriteFile:
 					'armed': person[20],
 					}
 				self.state_list.append(state_dict)
-				WriteFile.write_state_file(self)
+				#WriteFile.write_state_file(self)
 				date_dict = {
 					'month': person[4],
 					'day': person[5],
@@ -144,7 +145,7 @@ class WriteFile:
 					'armed': person[20],
 					}
 				self.date_list.append(date_dict)
-				WriteFile.write_date_file(self)
+				#WriteFile.write_date_file(self)
 				raceeth_dict = {
 					'raceethnicity': person[3],
 					'name': person[0],
@@ -163,7 +164,11 @@ class WriteFile:
 					'armed': person[20],
 					}
 				self.raceeth_list.append(raceeth_dict)
-				WriteFile.write_raceeth_file(self)
+				#WriteFile.write_raceeth_file(self)
+		search_string = 'Washington'
+		for person in self.person_list:
+			if search_string in person['name']:
+				print(person['name'])
 				
 	def write_person_file(self):		
 		person_file = open('person_file.csv', 'w')

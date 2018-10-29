@@ -201,10 +201,10 @@ def get_people():
 							'cause': row[13],
 							'armed': row[14],
 							}
-					person_list.append(person)
-			except Exception as e:
-				print(e, file=sys.stderr)
-			connection.close()
+				person_list.append(person)
+		except Exception as e:
+			print(e, file=sys.stderr)
+		connection.close()
 			
 		return json.dumps(person_list)
 		
@@ -233,7 +233,7 @@ def get_person(name):
 							'cause': row[13],
 							'armed': row[14],
 							}
-					person_list.append(person)
+				person_list.append(person)
 		except Exception as e:
 			print(e, file=sys.stderr)
 		connection.close()
@@ -249,28 +249,28 @@ def get_age(age):
 		try:
 			for person in get_select_query_results(connection, query, (age,)):
 				age = {
-							'age': person[0],
-							'name': person[1],
-							'gender': person[2],
-							'raceethnicity': person[3],
-							'month': person[4],
-							'day': person[5],
-							'year': person[6],
-							'streetaddress': person[7],
-							'city': person[8],
-							'state': person[9],
-							'latitude': person[10],
-							'longitude': person[11],				
-							'lawenforcementagency': person[12],
-							'cause': person[13],
-							'armed': person[14],
-							}	
-					age_list.append(age)
+					'age': person[0],
+					'name': person[1],
+					'gender': person[2],
+					'raceethnicity': person[3],
+					'month': person[4],
+					'day': person[5],
+					'year': person[6],
+					'streetaddress': person[7],
+					'city': person[8],
+					'state': person[9],
+					'latitude': person[10],
+					'longitude': person[11],				
+					'lawenforcementagency': person[12],
+					'cause': person[13],
+					'armed': person[14],
+					}	
+				age_list.append(age)
 		except Exception as e:
-            print(e, file=sys.stderr)
-        connection.close()
+			print(e, file=sys.stderr)
+		connection.close()
 
-    return json.dumps(age_list)
+	return json.dumps(age_list)
 	
 @app.route('/cities/<city>/')		
 def get_city(city):
@@ -300,8 +300,8 @@ def get_city(city):
 					}
 				city_list.append(city)
 		except Exception as e:
-            print(e, file=sys.stderr)
-        connection.close()
+			print(e, file=sys.stderr)
+		connection.close()
 	
 	return json.dumps(city_list)
 
@@ -402,11 +402,11 @@ def get_raceeth(raceeth):
 	return json.dumps(raceeth_list)
 
 if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print('Usage: {0} host port'.format(sys.argv[0]))
-        print('  Example: {0} perlman.mathcs.carleton.edu 5101'.format(sys.argv[0]))
-        exit()
-    
-    host = sys.argv[1]
-    port = int(sys.argv[2])
-    app.run(host=host, port=port, debug=True)
+	if len(sys.argv) != 3:
+		print('Usage: {0} host port'.format(sys.argv[0]))
+		print('  Example: {0} perlman.mathcs.carleton.edu 5101'.format(sys.argv[0]))
+		exit()
+
+	host = sys.argv[1]
+	port = int(sys.argv[2])
+	app.run(host=host, port=port, debug=True)

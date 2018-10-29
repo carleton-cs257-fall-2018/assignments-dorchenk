@@ -34,9 +34,7 @@ def load_from_books_csv_file(csv_file_name):
     csv_file = open(csv_file_name, encoding='utf-8')
     reader = csv.reader(csv_file)
 
-    authors = {}
-    books = []
-    books_authors = []
+    
     for row in reader:
         assert len(row) == 3
         book_id = len(books)
@@ -89,45 +87,46 @@ def authors_from_authors_string(authors_string):
 
     return authors
 
-def save_books_table(books, csv_file_name):
-    ''' Save the books in CSV form, with each row containing
-        (id, title, publication year). '''
-    output_file = open(csv_file_name, 'w', encoding='utf-8')
-    writer = csv.writer(output_file)
-    for book in books:
-        book_row = [book['id'], book['title'], book['publication_year']]
-        writer.writerow(book_row)
-    output_file.close()
+# def save_books_table(books, csv_file_name):
+#     ''' Save the books in CSV form, with each row containing
+#         (id, title, publication year). '''
+#     output_file = open(csv_file_name, 'w', encoding='utf-8')
+#     writer = csv.writer(output_file)
+#     for book in books:
+#         book_row = [book['id'], book['title'], book['publication_year']]
+#         writer.writerow(book_row)
+#     output_file.close()
 
-def save_authors_table(authors, csv_file_name):
-    ''' Save the books in CSV form, with each row containing
-        (id, last name, first name, birth year, death year), where
-        death year can be NULL. '''
-    output_file = open(csv_file_name, 'w', encoding='utf-8')
-    writer = csv.writer(output_file)
-    for author in sorted(authors, key=authors.get):
-        (last_name, first_name, birth_year, death_year) = author
-        if death_year == '':
-            death_year = 'NULL'
-        author_id = authors[author]
-        author_row = [author_id, last_name, first_name, birth_year, death_year]
-        writer.writerow(author_row)
-    output_file.close()
-
-def save_linking_table(books_authors, csv_file_name):
-    ''' Save the books in CSV form, with each row containing
-        (book id, author id). '''
-    output_file = open(csv_file_name, 'w', encoding='utf-8')
-    writer = csv.writer(output_file)
-    for book_author in books_authors:
-        books_authors_row = [book_author['book_id'], book_author['author_id']]
-        writer.writerow(books_authors_row)
-    output_file.close()
+# def save_authors_table(authors, csv_file_name):
+#     ''' Save the books in CSV form, with each row containing
+#         (id, last name, first name, birth year, death year), where
+#         death year can be NULL. '''
+#     output_file = open(csv_file_name, 'w', encoding='utf-8')
+#     writer = csv.writer(output_file)
+#     for author in sorted(authors, key=authors.get):
+#         (last_name, first_name, birth_year, death_year) = author
+#         if death_year == '':
+#             death_year = 'NULL'
+#         author_id = authors[author]
+#         author_row = [author_id, last_name, first_name, birth_year, death_year]
+#         writer.writerow(author_row)
+#     output_file.close()
+# 
+# def save_linking_table(books_authors, csv_file_name):
+#     ''' Save the books in CSV form, with each row containing
+#         (book id, author id). '''
+#     output_file = open(csv_file_name, 'w', encoding='utf-8')
+#     writer = csv.writer(output_file)
+#     for book_author in books_authors:
+#         books_authors_row = [book_author['book_id'], book_author['author_id']]
+#         writer.writerow(books_authors_row)
+#     output_file.close()
 
 if __name__ == '__main__':
-    books, authors, books_authors = load_from_books_csv_file('books-original.csv')
+    books, authors, books_authors = load_from_books_csv_file('person_file.csv')
 
-    save_books_table(books, 'books.csv')
-    save_authors_table(authors, 'authors.csv')
-    save_linking_table(books_authors, 'books_authors.csv')
+   #  save_person_table(person, 'person.csv')
+#     save_age_table(age, 'age.csv')
+#     save_city_table(city, 'city.csv')
+#     save_state_table(state, 'state.csv')
 
