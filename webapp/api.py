@@ -177,7 +177,7 @@ def set_headers(response):
 @app.route('/people/')
 def get_people():
 	query = '''SELECT name FROM person ORDER BY name'''
-	
+	#fix queries
 	sort_argument = flask.request.args.get('sort')
 	query += 'name'
 	person_list = []

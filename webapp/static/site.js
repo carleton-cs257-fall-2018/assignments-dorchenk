@@ -20,11 +20,27 @@ function onNameTabClicked() {
 	var url = getBaseURL() + '/name/';
 	fetch(url, {method: 'get'})
 	.then((response) => response.json())
+	.then(function(nameList) {
+		var tableBody = '';
+		for (var k = 0; k < nameList.length; k++) {
+			tableBody += '<tr>';
+			
+			tableBody += '<td>' + authorsList[k]['name'] + ",'"
+                            '</td>';
+        }
+        var resultsTableElement = document.getElementById('results_table');
+		if (resultsTableElement) {
+			resultsTableElement.innerHTML = tableBody;
+		}
+	})
+	.catch(function(error) {
+		console.log(error);
+	});
 }
 
 function onAgeTabClicked() {
 	var url = getBaseURL() + '/age/';
-
+	
 }
 
 function onRaceTabClicked() {
