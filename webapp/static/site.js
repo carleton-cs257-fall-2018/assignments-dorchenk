@@ -17,31 +17,33 @@ function onHomeTabClicked() {
 }
 
 function onNameTabClicked() {
-	var url = getBaseURL() + '/name';
+	var url = getBaseURL() + '/name/';
+	fetch(url, {method: 'get'})
+	.then((response) => response.json())
 }
 
 function onAgeTabClicked() {
-	var url = getBaseURL() + '/age';
+	var url = getBaseURL() + '/age/';
 
 }
 
 function onRaceTabClicked() {
-	var url = getBaseURL() + '/race';
+	var url = getBaseURL() + '/race/';
 
 }
 
 function onDateTabClicked() {
-	var url = getBaseURL() + '/date';
+	var url = getBaseURL() + '/date/';
 }
 
 function onCityTabClicked() {
-	var url = getBaseURL() + '/city';
+	var url = getBaseURL() + '/city/';
 }
 
 function onStateTabClicked() {
-	var url = getBaseURL() + '/state';
+	var url = getBaseURL() + '/state/';
 }
 
 function onDonationsTabClicked() {
-	var url = getBaseURL() + '/donations';
+	var url = getBaseURL() + '/donations/';
 }
