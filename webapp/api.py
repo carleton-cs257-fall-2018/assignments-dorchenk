@@ -15,143 +15,10 @@ import psycopg2
 
 app = flask.Flask(__name__, static_folder='static', template_folder='templates')
 
-people = []
-ages = []
-cities = []
-states = []
-dates = []
-raceeths = []
-with open('person_file.csv', 'r', encoding='utf-8') as person_data:
-	person_data = csv.reader(person_data)
-	for person in person_data:
-		person_dict = {
-			'name': person[0],
-			'age': person[1],
-			'gender': person[2],
-			'raceethnicity': person[3],
-			'month': person[4],
-			'day': person[5],
-			'year': person[6],
-			'streetaddress': person[7],
-			'city': person[8],
-			'state': person[9],
-			'latitude': person[10],
-			'longitude': person[11],
-			'lawenforcementagency': person[12],
-			'cause': person[13],
-			'armed': person[14],
-			}
-		people.append(person_dict)
-with open('age_file.csv', 'r', encoding='utf=8') as age_data:
-	age_data = csv.reader(age_data)
-	for person in age_data: 
-		age_dict = {
-			'age': person[0],
-			'name': person[1],
-			'gender': person[2],
-			'raceethnicity': person[3],
-			'month': person[4],
-			'day': person[5],
-			'year': person[6],
-			'streetaddress': person[7],
-			'city': person[8],
-			'state': person[9],
-			'latitude': person[10],
-			'longitude': person[11],				
-			'lawenforcementagency': person[12],
-			'cause': person[13],
-			'armed': person[14],
-			}	
-		ages.append(age_dict)
-with open('city_file.csv', 'r', encoding='utf=8') as city_data:
-	city_data = csv.reader(city_data)
-	for person in city_data: 
-		city_dict = {
-			'city': person[0],
-			'name': person[1],
-			'age': person[2],
-			'gender': person[3],
-			'raceethnicity': person[4],
-			'month': person[5],
-			'day': person[6],
-			'year': person[7],
-			'streetaddress': person[8],
-			'state': person[9],
-			'latitude': person[10],
-			'longitude': person[11],
-			'lawenforcementagency': person[12],
-			'cause': person[13],
-			'armed': person[14],
-			}
-		cities.append(city_dict)
-with open('state_file.csv', 'r', encoding='utf=8') as state_data:
-	state_data = csv.reader(state_data)
-	for person in state_data: 
-		state_dict = {
-			'state': person[0],
-			'name': person[1],
-			'age': person[2],
-			'gender': person[3],
-			'raceethnicity': person[4],
-			'month': person[5],
-			'day': person[6],
-			'year': person[7],
-			'streetaddress': person[8],
-			'city': person[9],
-			'latitude': person[10],
-			'longitude': person[11],
-			'lawenforcementagency': person[12],
-			'cause': person[13],
-			'armed': person[14],
-			}
-		states.append(state_dict)
-with open('date_file.csv', 'r', encoding='utf=8') as date_data:
-	date_data = csv.reader(date_data)
-	for person in date_data: 		
-		date_dict = {
-			'month': person[0],
-			'day': person[1],
-			'name': person[2],
-			'age': person[3],
-			'gender': person[4],
-			'raceethnicity': person[5],
-			'year': person[6],
-			'streetaddress': person[7],
-			'city': person[8],
-			'state': person[9],
-			'latitude': person[10],
-			'longitude': person[11],				
-			'lawenforcementagency': person[12],
-			'cause': person[13],
-			'armed': person[14],
-			}
-		dates.append(date_dict)
-with open('raceeth_file.csv', 'r', encoding='utf=8') as raceeth_data:
-	raceeth_data = csv.reader(raceeth_data)
-	for person in raceeth_data: 
-		raceeth_dict = {
-			'raceethnicity': person[0],
-			'name': person[1],
-			'age': person[2],
-			'gender': person[3],
-			'month': person[4],
-			'day': person[5],
-			'year': person[6],
-			'streetaddress': person[7],
-			'city': person[8],
-			'state': person[9],
-			'latitude': person[10],
-			'longitude': person[11],
-			'lawenforcementagency': person[12],
-			'cause': person[13],
-			'armed': person[14],
-			}
-		raceeths.append(raceeth_dict)
-
 def get_connection():
 	connection = None
 	try:
-		connection = pyscopg2.connect(database=config.database,
+		connection = psycopg2.connect(database=config.database,
 										user=config.user,
 										password=config.password)
 	except Exception as e:
@@ -159,6 +26,7 @@ def get_connection():
 	return connection
 
 def get_select_query_results(connection, query, parameters=None):
+	cursor = connection.cursor()
 	if parameters is not None:
 		cursor.execute(query, parameters)
 	else:
@@ -170,100 +38,71 @@ def set_headers(response):
 	response.headers['Access-Control-Allow-Origin'] = '*'
 	return response
 
-# @app.route('/')
-# def hello():
-#     return 'Welcome to our website.'
+@app.route('/')
+def hello():
+    return 'Welcome to our website.'
 
-@app.route('/people/')
+@app.route('/name/')
 def get_people():
 	query = '''SELECT name FROM person ORDER BY name'''
-	#fix queries
-	sort_argument = flask.request.args.get('sort')
-	query += 'name'
 	person_list = []
 	connection = get_connection()
 	if connection is not None:
 		try:
 			for row in get_select_query_results(connection, query):
-				person = {'name': row[0],
-							'age': row[1],
-							'gender': row[2],
-							'raceethnicity': row[3],
-							'month': row[4],
-							'day': row[5],
-							'year': row[6],
-							'streetaddress': row[7],
-							'city': row[8],
-							'state': row[9],
-							'latitude': row[10],
-							'longitude': row[11],
-							'lawenforcementagency': row[12],
-							'cause': row[13],
-							'armed': row[14],
+				person = {'name': row[0]
 							}
 				person_list.append(person)
 		except Exception as e:
 			print(e, file=sys.stderr)
 		connection.close()
 			
-		return json.dumps(person_list)
+	return json.dumps(person_list)
 		
-@app.route('/people/<name>/')	
+@app.route('/name/<name>/')	
 def get_person(name):
-	query = '''SELECT name FROM person ORDER BY name'''
+	query = '''SELECT name, age, gender, raceethnicity, month, day,
+		year, streetaddress, city, state, latitude, longitude, 
+		lawenforcementagency, cause, armed FROM person ORDER BY name'''
 	person_list = []
 	connection = get_connection()
-	lower_case_name = name.lower()
 	if connection is not None:
 		try:
-			for row in get_select_query_results(connection, query, (lower_case_name,)):
-				person = {'name': row[0],
-							'age': row[1],
-							'gender': row[2],
-							'raceethnicity': row[3],
-							'month': row[4],
-							'day': row[5],
-							'year': row[6],
-							'streetaddress': row[7],
-							'city': row[8],
-							'state': row[9],
-							'latitude': row[10],
-							'longitude': row[11],
-							'lawenforcementagency': row[12],
-							'cause': row[13],
-							'armed': row[14],
-							}
-				person_list.append(person)
+			for row in get_select_query_results(connection, query, (name,)):
+				if name in row[0]:
+					person = {'name': row[0],
+								'age': row[1],
+								'gender': row[2],
+	 							'raceethnicity': row[3],
+								'month': row[4],
+								'day': row[5],
+								'year': row[6],
+								'streetaddress': row[7],
+								'city': row[8],
+								'state': row[9],
+								'latitude': row[10],
+								'longitude': row[11],
+								'lawenforcementagency': row[12],
+								'cause': row[13],
+								'armed': row[14]
+								}
+					person_list.append(person)
 		except Exception as e:
 			print(e, file=sys.stderr)
 		connection.close()
 		
 	return json.dumps(person_list)
 
-@app.route('/ages/<age>/')		
-def get_age(age):
+@app.route('/age/')		
+def get_age():
 	age_list = []
-	query = '''SELECT age, name FROM authors ORDER BY age'''
+	query = '''SELECT age FROM age ORDER BY age'''
 	connection = get_connection()
 	if connection is not None:
 		try:
-			for person in get_select_query_results(connection, query, (age,)):
+			for row in get_select_query_results(connection, query):
 				age = {
-					'age': person[0],
-					'name': person[1],
-					'gender': person[2],
-					'raceethnicity': person[3],
-					'month': person[4],
-					'day': person[5],
-					'year': person[6],
-					'streetaddress': person[7],
-					'city': person[8],
-					'state': person[9],
-					'latitude': person[10],
-					'longitude': person[11],				
-					'lawenforcementagency': person[12],
-					'cause': person[13],
-					'armed': person[14],
+					'age': row[0]
 					}	
 				age_list.append(age)
 		except Exception as e:
@@ -271,32 +110,38 @@ def get_age(age):
 		connection.close()
 
 	return json.dumps(age_list)
-	
-@app.route('/cities/<city>/')		
-def get_city(city):
-	city_list = []
-	lower_case_city = city.lower()
-	query = '''SELECT city FROM cities ORDER BY city'''
+
+@app.route('/age/<age>/')		
+def get_name_by_age(age):
+	age_list = []
+	query = '''SELECT age, name FROM age ORDER BY name'''
 	connection = get_connection()
 	if connection is not None:
 		try:
-			for person in get_select_query_results(connection, query, (lower_case_city,)):
+			for row in get_select_query_results(connection, query, (age,)):
+				if age in row[0]:
+					ages = {
+						'age': row[0],
+						'name': row[1]
+						}
+					age_list.append(ages)
+
+		except Exception as e:
+			print(e, file=sys.stderr)
+		connection.close()
+
+	return json.dumps(age_list)	
+	
+@app.route('/city/')		
+def get_city():
+	city_list = []
+	query = '''SELECT city FROM city ORDER BY city'''
+	connection = get_connection()
+	if connection is not None:
+		try:
+			for person in get_select_query_results(connection, query):
 				city = {
-					'city': person[0],
-					'name': person[1],
-					'age': person[2],
-					'gender': person[3],
-					'raceethnicity': person[4],
-					'month': person[5],
-					'day': person[6],
-					'year': person[7],
-					'streetaddress': person[8],
-					'state': person[9],
-					'latitude': person[10],
-					'longitude': person[11],
-					'lawenforcementagency': person[12],
-					'cause': person[13],
-					'armed': person[14],
+					'city': person[0]
 					}
 				city_list.append(city)
 		except Exception as e:
@@ -304,98 +149,134 @@ def get_city(city):
 		connection.close()
 	
 	return json.dumps(city_list)
-
-@app.route('/states/<state>/')		
-def get_state(state):
-	state_list = []
-	query = '''SELECT state FROM states ORDER BY state'''
+	
+@app.route('/city/<city>/')
+def get_name_by_city(city):
+	city_list = []
+	query = '''SELECT city, name FROM city ORDER BY name'''
 	connection = get_connection()
-	lower_case_state = state.lower()
 	if connection is not None:
 		try:
-			for person in get_select_query_results(connection, query, (lower_case_state,)):
-				state_dict = {
-						'state': person[0],
-						'name': person[1],
-						'age': person[2],
-						'gender': person[3],
-						'raceethnicity': person[4],
-						'month': person[5],
-						'day': person[6],
-						'year': person[7],
-						'streetaddress': person[8],
-						'city': person[9],
-						'latitude': person[10],
-						'longitude': person[11],
-						'lawenforcementagency': person[12],
-						'cause': person[13],
-						'armed': person[14],
+			for row in get_select_query_results(connection, query, (city,)):
+				if row[0] in city:
+					cities = {
+						'city': row[0],
+						'name': row[1]
 						}
-				state_list.append(person)
+					city_list.append(cities)
+		except Exception as e:
+			print(e, file=sys.stderr)
+		connection.close()
+	
+	return json.dumps(city_list)
+
+@app.route('/state/')		
+def get_state():
+	state_list = []
+	query = '''SELECT state FROM state ORDER BY state'''
+	connection = get_connection()
+	if connection is not None:
+		try:
+			for person in get_select_query_results(connection, query):
+				state_dict = {
+						'state': person[0]
+						}
+				state_list.append(state_dict)
 		except Exception as e:
 			print(e, file=sys.stderr)
 		connection.close()
 	return json.dumps(state_list)
 	
-@app.route('/dates/<month>/<day>/')		
-def get_date(month, day):
-	date_list = []
-	lower_case_month = month.lower()
-	query = '''SELECT month, day FROM dates ORDER BY month'''
+@app.route('/state/<state>/')
+def get_name_by_state(state):	
+	state_list = []
+	query = '''SELECT state, name FROM state ORDER BY name'''
 	connection = get_connection()
 	if connection is not None:
 		try:
-			for person in get_select_query_results(connection, query, (month, day,)):
+			for row in get_select_query_results(connection, query, (state,)):
+				if row[0] in state:
+					states = {
+							'state': row[0],
+							'name': row[1]
+							}
+					state_list.append(states)
+		except Exception as e:
+			print(e, file=sys.stderr)
+		connection.close()
+	return json.dumps(state_list)
+	
+@app.route('/date/')		
+def get_date():
+	date_list = []
+	query = '''SELECT month, day FROM date ORDER BY month'''
+	connection = get_connection()
+	if connection is not None:
+		try:
+			for person in get_select_query_results(connection, query):
 				date_dict = {
 					'month': person[0],
-					'day': person[1],
-					'name': person[2],
-					'age': person[3],
-					'gender': person[4],
-					'raceethnicity': person[5],
-					'year': person[6],
-					'streetaddress': person[7],
-					'city': person[8],
-					'state': person[9],
-					'latitude': person[10],
-					'longitude': person[11],				
-					'lawenforcementagency': person[12],
-					'cause': person[13],
-					'armed': person[14],
+					'day': person[1]
 					}
-				date_list.append(person)
+				date_list.append(date_dict)
 		except Exception as e:
 			print(e, file=sys.stderr)
 		connection.close()
 	return json.dumps(date_list)
 	
-@app.route('/raceeths/<raceeth>/')		
-def get_raceeth(raceeth):
-	raceeth_list = []
-	lower_case_race = raceeth.lower()
-	query = '''SELECT raceeth FROM raceeths ORDER BY raceeth'''
+@app.route('/date/<month>')		
+def get_name_by_date(month):
+	date_list = []
+	query = '''SELECT month, day, name FROM date ORDER BY day'''
 	connection = get_connection()
 	if connection is not None:
 		try:
-			for person in get_select_query_results(connection, query, (lower_case_race,)):
+			for row in get_select_query_results(connection, query, (month,)):
+				if row[0] in month:
+					date = {
+						'month': row[0],
+						'day': row[1],
+						 'name': row[2]
+						}
+					date_list.append(date)
+		except Exception as e:
+			print(e, file=sys.stderr)
+		connection.close()
+	return json.dumps(date_list)
+	
+@app.route('/race/')		
+def get_raceeth():
+	raceeth_list = []
+	query = '''SELECT raceethnicity FROM raceethnicity ORDER BY raceethnicity'''
+	connection = get_connection()
+	if connection is not None:
+		try:
+			for person in get_select_query_results(connection, query):
 				raceeth_dict = {
-					'raceethnicity': person[0],
-					'name': person[1],
-					'age': person[2],
-					'gender': person[3],
-					'month': person[4],
-					'day': person[5],
-					'year': person[6],
-					'streetaddress': person[7],
-					'city': person[8],
-					'state': person[9],
-					'latitude': person[10],
-					'longitude': person[11],
-					'lawenforcementagency': person[12],
-					'cause': person[13],
-					'armed': person[14],
+					'raceethnicity': person[0]
 					}
-				raceeth_list.append(person)
+				raceeth_list.append(raceeth_dict)
+		except Exception as e:
+			print(e, file=sys.stderr)
+		connection.close()
+	return json.dumps(raceeth_list)
+
+@app.route('/race/<race>/')		
+def get_name_by_race(race):
+	raceeth_list = []
+	if race == "Asian":
+		race = "Asian/Pacific Islander"
+	query = '''SELECT raceethnicity, name FROM raceethnicity ORDER BY name'''
+	connection = get_connection()
+	if connection is not None:
+		try:
+			for row in get_select_query_results(connection, query, (race,)):
+				if row[0] in race:
+					raceeth = {
+						 'raceethnicity': row[0],
+						 'name': row[1]
+						}
+					raceeth_list.append(raceeth)
 		except Exception as e:
 			print(e, file=sys.stderr)
 		connection.close()

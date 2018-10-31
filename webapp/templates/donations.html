@@ -2,7 +2,6 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="main.css"/>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}" />
     <script>var api_port = {{ api_port }};</script>
     <script type="text/javascript" src="{{ url_for('static', filename='site.js') }}" defer></script>
@@ -15,19 +14,19 @@
 
       <p> Please donate to us!</p>
       <hr>
-      <p>Our venmos are ... (:</p>
+      <p>Our venmos are @javin-white and @adoseofkellen</p>
 
     </article>
     <nav class="main-nav">
     <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/name/">Name</a></li>
+      <li><a href='/'>Home</a></li>
+      <li><a href='/name/'>Name</a></li>
       <li><a href="/age/">Age</a></li>
-      <li><a href="/race">Race</a></li>
+      <li><a href="/race/">Race</a></li>
       <li><a href="/date/">Date</a></li>
       <li><a href="/city/">City</a></li>
       <li><a href="/state/">State</a></li>
-      <li><a href="/donations/" class='active-page'>Donations</a></li>
+      <li><a href="/donations/"  class='active-page'>Donations</a></li>
     </ul>
     <form action="/result.html">
       <input type="search" placeholder="Search">

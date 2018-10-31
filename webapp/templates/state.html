@@ -2,36 +2,35 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="main.css"/>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}" />
     <script>var api_port = {{ api_port }};</script>
     <script type="text/javascript" src="{{ url_for('static', filename='site.js') }}" defer></script>
     <title>Search Police Killings</title>
   </head>
-  <body>
+  <body onload="onStateTabClicked()">
   <header><h1>Who Died</h1></header>
   <div id="main">
     <article>
 
-      <p>Pick a state for information about people killed in that area:</p>
+      <p>Search a state for names of people killed in that state:</p>
       <hr>
+		<input type="search" id="getState" placeholder="Enter a state">
+    	<button onclick="getState()">Search</button>
+    	<p id="search"></p>
+		<p><table id="results_table"></table></p>
 
     </article>
     <nav class="main-nav">
     <ul>
-       <li><a href="/">Home</a></li>
-      <li><a href="/name/">Name</a></li>
+       <li><a href='/'>Home</a></li>
+      <li><a href='/name/'>Name</a></li>
       <li><a href="/age/">Age</a></li>
-      <li><a href="/race">Race</a></li>
+      <li><a href="/race/">Race</a></li>
       <li><a href="/date/">Date</a></li>
       <li><a href="/city/">City</a></li>
       <li><a href="/state/" class='active-page'>State</a></li>
       <li><a href="/donations/">Donations</a></li>
     </ul>
-    <form action="/result.html">
-      <input type="search" placeholder="Search">
-      <button>Go</button>
-    </form>
     </nav>
   </div>
   <footer>
