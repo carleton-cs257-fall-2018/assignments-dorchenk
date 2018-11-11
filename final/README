@@ -1,0 +1,11 @@
+Land Me Where?
+Kellen Dorchen, November 2018
+
+This project is an attempt to simulate what
+it would be like to land on an object of x mass
+and some size y, as a person falling at some
+initial velocity.
+
+This is a design patter problem because the simulation
+requires an effective representation of gravity which
+is a commonly solved problem among game creators.

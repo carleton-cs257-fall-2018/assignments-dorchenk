@@ -1,0 +1,27 @@
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.shape.Rectangle?>
+<?import gravity.Object?>
+<AnchorPane fx:controller="gravity.Controller" xmlns:fx="http://javafx.com/fxml">
+
+    <Button fx:id="pauseButton" text="Pause" AnchorPane.leftAnchor="30" AnchorPane.topAnchor="15" onAction="#onPauseButton"/>
+    <!--Insert Reset button-->
+
+    <!--<Label fx:id="scoreLabel" AnchorPane.leftAnchor="120" AnchorPane.topAnchor="15" />-->
+    <!--Convert that label to reports of velocity/accel/forceG/distance(from centers)-->
+    <!--Include a line that enables user to enter masses-->
+    <!--Consider allowing multiple objects?? Maybe too complex-->
+
+    <AnchorPane fx:id="gameBoard"
+          AnchorPane.topAnchor="60" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="20"
+          style="-fx-background-color: #bbb; -fx-border-color:black; -fx-border-width:1px 0px 1px 0px;">
+
+        <Object fx:id="object" layoutX="150" layoutY="135" radius="5" fill="green" velocityX="0.02" velocityY="0.01" mass="5"/>
+        <Object fx:id="player" layoutX="200" layoutY="150" radius="15" fill="blue" velocityX="-10" velocityY="10" mass="30"/>
+    </AnchorPane>
+
+    <Label AnchorPane.leftAnchor="20" AnchorPane.bottomAnchor="0" style="-fx-font-size: 100%"
+           text="Left: A or left-arrow; Right: D or right-arrow" />
+
+</AnchorPane>
