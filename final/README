@@ -1,11 +1,22 @@
 Land Me Where?
-Kellen Dorchen, November 2018
+Kellen Dorchen, Addison Partida, November 2018
 
 This project is an attempt to simulate what
 it would be like to land on an object of x mass
 and some size y, as a person falling at some
 initial velocity.
 
-This is a design patter problem because the simulation
-requires an effective representation of gravity which
-is a commonly solved problem among game creators.
+Our project is a simulator of how objects in space move in relation to each other as well as responsive to changes in velocity, acceleration, and mass. We hope to be able to provide users with the chance to use desired inputs and see how the objects change in relation to changing inputs. Essentially, much like this here: http://astro.ucla.edu/undergrad/astro3/orbits.html 
+
+This is a design patter problem because the simulation requires an effective representation of gravity which is a commonly solved problem among game creators. It involves a user to control the inputs and manage the outputs according to desired preferences for visualization of the changes being made. Our model are the orbiting “masses”, the view is the corresponding trajectories of the masses, and the user would be able to manipulate a set of variables.
+
+Our core classes consist of:
+Controller - timer, initialize, updateInitiliaze, updateAnimation, pause
+View - going to update the model based on inputs
+Gravity model - get Distance, forceofGravity, getTotal mass, hopefully this does the majority of the heavy lifting in terms on computing the output
+Object - methods include velocity, acceleration, getMass, here the results of gravity model will be passed in to manipulate our objects
+Effects - creates actual interface/“board”, we will be able to see the animated changes for our Objects
+
+
+
+
