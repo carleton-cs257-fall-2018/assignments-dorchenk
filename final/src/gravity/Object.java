@@ -16,8 +16,8 @@ public class Object extends Circle {
     @FXML private double velocityX; //updates based on accel but this is initial ... consider making this zero // controller can update??
     @FXML private double velocityY;
     @FXML private double mass; //this will come from fxml or controller
-    private double accelX = 0.001; //might update based on controller
-    private double accelY = 0.001; //
+    private double accelX = 0; //might update based on controller
+    private double accelY = 0; //
 
 
     public Object() {
@@ -30,7 +30,7 @@ public class Object extends Circle {
     }
 
     public double getVelocityX() {
-        this.velocityX = velocityX + accelX;
+        this.velocityX = velocityX;
         return this.velocityX;
     }
 
@@ -39,7 +39,7 @@ public class Object extends Circle {
     }
 
     public double getVelocityY() {
-        this.velocityY = velocityY + accelY;
+        this.velocityY = velocityY;
         return this.velocityY;
     }
 
@@ -52,7 +52,8 @@ public class Object extends Circle {
     }
 
     public double getMass() {
-        return mass;
+        this.mass = mass;
+        return this.mass;
     }
 
     public double getAccelX() {
