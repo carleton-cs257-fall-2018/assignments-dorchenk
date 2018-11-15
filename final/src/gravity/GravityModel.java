@@ -14,13 +14,10 @@ import java.lang.Math;
 
 public class GravityModel {
 
-    @FXML private Object player;
-    @FXML private Object object;
-
     private double distance;
-    private double G = 0.0000000000667;
+    private double G = 0.0000000000667; //take input later on!
     private double totalMass;
-    private double forceG; //updates based on distance between objects and the masses of objects
+    private double forceG;
     private double desc;
     private double vesc;
 
@@ -28,16 +25,46 @@ public class GravityModel {
 
     }
 
-    public double getDistance(Object player, Object object, double distX, double distY) {
+    public void update(GravityView view) {
+
+    }
+
+    public double getDistance(Body player, Body object, double distX, double distY) {
         this.distance = Math.sqrt((distX * distX) + (distY * distY));
         return this.distance;
     }
 
-    public double getSingleMass(Object player) {
+    public double getSingleMass(Body player) {
         return player.getMass();
     }
 
-    public double getTotalMass(Object player, Object object) {
+    public double getVelX(Body player) {
+        return player.getVelocityX();
+    }
+
+    public double getVelY(Body player) {
+        return player.getVelocityY();
+    }
+
+    public double getAccX(Body player) {
+        return player.getAccelX();
+    }
+
+    public double getAccY(Body player) {
+        return player.getAccelY();
+    }
+
+    public double getLargerMass(Body player, Body object) {
+        if (player.getMass() >= object.getMass()) {
+            return player.getMass();
+        } else {
+            return object.getMass();
+        }
+    }
+
+    //Consider method to force an orbit. Maybe controller contains a boolean to start object orbiting player
+
+    public double getTotalMass(Body player, Body object) {
         double mass1 = object.getMass();
         double mass2 = player.getMass();
         totalMass = mass1 + mass2;
@@ -48,31 +75,30 @@ public class GravityModel {
         return forceG;
     }
 
-    public double getForceG(Object player, Object object, double distance) {
+    public double getForceG(Body player, Body object, double distance) {
         double M = player.getMass() * object.getMass();
         this.forceG = (G*((M)/(distance*distance)));
         return this.forceG;
     }
 
-    public double getDesc(Object player, Object object) {
+    public double getDesc(Body player, Body object) {
         if(player.getMass() >= object.getMass()) {
-            this.desc = ((2*G) * (player.getMass())) / (player.getVelocityX() + player.getVelocityY());
+            desc = ((2*G) * (player.getMass())) / (vesc); //consider doing for x and y directions
         }
         else {
-            this.desc = ((2*G) * (object.getMass())) / (player.getVelocityX() + player.getVelocityY()); //slope of velocities is velocity?
+            desc = ((2*G) * (object.getMass())) / (player.getVelocityX() + player.getVelocityY()); //slope of velocities is velocity?
         }
-        this.desc = (this.desc * this.desc)/2; //make it positive
-        return this.desc;
+        desc = Math.abs(desc); //make it positive
+        return desc;
     }
 
-    public double getVesc(Object player, Object object, double distance) {
+    public double getVesc(Body player, Body object, double distance) {
         if(player.getMass() >= object.getMass()) {
 //            if ((player.getVelocityX() >= object.getVelocityX()) || (player.getVelocityY() <= object.getVelocityY())) {
-            this.vesc = ((2*G) * (player.getMass())) / (distance * distance);
+            this.vesc = ((2*G) * player.getMass()) / (distance * distance);
         } else {
             this.vesc = ((2*G) * (object.getMass())) / (distance * distance);
         }
-
         return this.vesc;
     }
 

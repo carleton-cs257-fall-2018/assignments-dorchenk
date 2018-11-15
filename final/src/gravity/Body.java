@@ -9,10 +9,10 @@ package gravity;
 import javafx.fxml.FXML;
 import javafx.scene.shape.Circle;
 
-//This objects velocity will be change by the players force of gravity (a constant)
+//This Bodys velocity will be change by the players force of gravity (a constant)
 //initialize as zero.
 
-public class Object extends Circle {
+public class Body extends Circle {
     @FXML private double velocityX; //updates based on accel but this is initial ... consider making this zero // controller can update??
     @FXML private double velocityY;
     @FXML private double mass; //this will come from fxml or controller
@@ -20,7 +20,7 @@ public class Object extends Circle {
     private double accelY = 0; //
 
 
-    public Object() {
+    public Body() {
 
     }
 
