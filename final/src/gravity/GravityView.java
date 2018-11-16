@@ -38,12 +38,8 @@ public class GravityView {
 
 
 
-    public void update(GravityModel gravityModel, Body player, Body object) {
-        dataPlayer.add(0, gravityModel.getSingleMass(player));                  //Mass
-        dataPlayer.add(1, gravityModel.getVelX(player));                        //VX
-        dataPlayer.add(2, gravityModel.getVelY(player));                        //VY
-        dataPlayer.add(3, gravityModel.getAccX(player));                        //AX
-        dataPlayer.add(4, gravityModel.getAccY(player));                        //AY
+    public void update() {
+
      }
 
 }

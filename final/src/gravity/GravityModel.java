@@ -21,6 +21,12 @@ public class GravityModel {
     private double desc;
     private double vesc;
 
+    private double gravParam;
+    private double major;
+    private double minor;
+    private double orbitalV;
+    private double ecc;
+
     public GravityModel() {
 
     }
@@ -30,28 +36,22 @@ public class GravityModel {
     }
 
     public double getDistance(Body player, Body object, double distX, double distY) {
+        if (distX > -1 && distX < 0) {
+            distX = -0.1;
+        } else if (distX >= 0 && distX < 1) {
+            distX = 0.1;
+        }
+        if (distY > -1 && distY < 0) {
+            distX = -0.1;
+        } else if (distY >= 0 && distY < 1) {
+            distY = 0.1;
+        }
         this.distance = Math.sqrt((distX * distX) + (distY * distY));
         return this.distance;
     }
 
     public double getSingleMass(Body player) {
         return player.getMass();
-    }
-
-    public double getVelX(Body player) {
-        return player.getVelocityX();
-    }
-
-    public double getVelY(Body player) {
-        return player.getVelocityY();
-    }
-
-    public double getAccX(Body player) {
-        return player.getAccelX();
-    }
-
-    public double getAccY(Body player) {
-        return player.getAccelY();
     }
 
     public double getLargerMass(Body player, Body object) {
@@ -86,13 +86,18 @@ public class GravityModel {
             desc = ((2*G) * (player.getMass())) / (vesc); //consider doing for x and y directions
         }
         else {
-            desc = ((2*G) * (object.getMass())) / (player.getVelocityX() + player.getVelocityY()); //slope of velocities is velocity?
+            desc = ((2*G) * (object.getMass())) / (vesc);
         }
         desc = Math.abs(desc); //make it positive
         return desc;
     }
 
     public double getVesc(Body player, Body object, double distance) {
+        if (distance > -1 && distance < 0) {
+            distance = -0.01;
+        } else if (distance >= 0 && distance < 1) {
+            distance = 0.01;
+        }
         if(player.getMass() >= object.getMass()) {
 //            if ((player.getVelocityX() >= object.getVelocityX()) || (player.getVelocityY() <= object.getVelocityY())) {
             this.vesc = ((2*G) * player.getMass()) / (distance * distance);
@@ -101,5 +106,37 @@ public class GravityModel {
         }
         return this.vesc;
     }
+
+    public double getGravParam(Body player, Body object) {
+        gravParam = (G * player.getMass()) + (G * object.getMass());
+        return gravParam;
+    }
+
+    public double getMajorA(Body player, Body object, double distance) {        //this will not always be the major but for now this is good.
+        major = distance * (object.getMass() / (player.getMass() + object.getMass()));
+        return major;
+    }
+
+    public double getMinorB(double distance, double major) {
+        minor = distance - major;
+        return minor;
+    }
+
+    public double getOrbitalV(double gravParam, double major, double distance) {
+        if (distance > -1 && distance < 0) {
+            distance = -0.01;
+        } else if (distance >= 0 && distance < 1) {
+            distance = 0.01;
+        }
+        orbitalV = Math.sqrt((gravParam * ((2/distance)-(1-major))));
+        return orbitalV;
+    }
+
+    public double getEcc(double major, double minor) {
+        ecc = Math.sqrt((1-((minor * minor)/(major * major))));
+        return ecc;
+    }
+
+
 
 }
