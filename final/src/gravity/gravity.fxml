@@ -14,7 +14,17 @@
     <Button fx:id="orbitButton" text="Orbit" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="5" onAction="#onOrbitButton"/>
     <Button fx:id="bounceButton" text="Bounce" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="30" onAction="#onBounceButton"/>
 
-    <Label fx:id="playerData" AnchorPane.leftAnchor="200" AnchorPane.topAnchor="15" />
+    <Label fx:id="playerVX" AnchorPane.leftAnchor="200" AnchorPane.topAnchor="5" style="-fx-font-size: 100%"/>
+    <Label fx:id="playerVY" AnchorPane.leftAnchor="320" AnchorPane.topAnchor="5" style="-fx-font-size: 100%"/>
+    <Label fx:id="playerAX" AnchorPane.leftAnchor="200" AnchorPane.topAnchor="30" style="-fx-font-size: 100%"/>
+    <Label fx:id="playerAY" AnchorPane.leftAnchor="320" AnchorPane.topAnchor="30" style="-fx-font-size: 100%"/>
+
+    <Label fx:id="objectVX" AnchorPane.leftAnchor="440" AnchorPane.topAnchor="5" style="-fx-font-size: 100%"/>
+    <Label fx:id="objectVY" AnchorPane.leftAnchor="560" AnchorPane.topAnchor="5" style="-fx-font-size: 100%"/>
+    <Label fx:id="objectAX" AnchorPane.leftAnchor="440" AnchorPane.topAnchor="30" style="-fx-font-size: 100%"/>
+    <Label fx:id="objectAY" AnchorPane.leftAnchor="560" AnchorPane.topAnchor="30" style="-fx-font-size: 100%"/>
+
+    <Label fx:id="eccLabel" AnchorPane.leftAnchor="680" AnchorPane.topAnchor="30" style="-fx-font-size: 100%"/>
 
     <!--<Slider fx:id="playerMass" blockIncrement="1" layoutX="100" layoutY="15" majorTickUnit="5" max="50" minorTickCount="1" showTickLabels="true" showTickMarks="true" onAction="#onPlayerMass" />-->
     <!--<TextField fx:id="textField" layoutX="100.0" layoutY="99.0" prefHeight="25.0" prefWidth="75.0" />-->
@@ -29,8 +39,8 @@
           <!--style="-fx-background-color: #bbb; -fx-border-color:black; -fx-border-width:1px 0px 1px 0px;">-->
         <!--<GravityView fx:id="gravityView"-->
         <!--<Body fx:id="object2" layoutX="375" layoutY="300" radius="5" fill="green" velocityX="-0.1" velocityY="-0.1" mass="100000"/>-->
-        <Body fx:id="object" layoutX="275" layoutY="300" radius="5" fill="red" velocityX="0.1" velocityY="-0.1" mass="10000"/>
-        <Body fx:id="player" layoutX="325" layoutY="350" radius="10" fill="white" velocityX="-0" velocityY="-0" mass="1000000"/>
+        <Body fx:id="object" layoutX="275" layoutY="300" radius="5" fill="red" velocityX="0.1" velocityY="-0.1" mass="100000"/>
+        <Body fx:id="player" layoutX="325" layoutY="350" radius="5" fill="white" velocityX="-0" velocityY="-0" mass="10000000"/>
         <!--</GravityView>-->
     </AnchorPane>
 

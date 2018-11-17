@@ -36,16 +36,16 @@ public class GravityModel {
     }
 
     public double getDistance(Body player, Body object, double distX, double distY) {
-        if (distX > -1 && distX < 0) {
-            distX = -0.1;
+/*        if (distX > -1 && distX < 0) {
+            distX = -1;
         } else if (distX >= 0 && distX < 1) {
-            distX = 0.1;
+            distX = 1;
         }
         if (distY > -1 && distY < 0) {
-            distX = -0.1;
+            distX = -1;
         } else if (distY >= 0 && distY < 1) {
-            distY = 0.1;
-        }
+            distY = 1;
+        }*/
         this.distance = Math.sqrt((distX * distX) + (distY * distY));
         return this.distance;
     }
@@ -93,11 +93,11 @@ public class GravityModel {
     }
 
     public double getVesc(Body player, Body object, double distance) {
-        if (distance > -1 && distance < 0) {
-            distance = -0.01;
+/*        if (distance > -1 && distance < 0) {
+            distance = -1;
         } else if (distance >= 0 && distance < 1) {
-            distance = 0.01;
-        }
+            distance = 1;
+        }*/
         if(player.getMass() >= object.getMass()) {
 //            if ((player.getVelocityX() >= object.getVelocityX()) || (player.getVelocityY() <= object.getVelocityY())) {
             this.vesc = ((2*G) * player.getMass()) / (distance * distance);
@@ -113,7 +113,7 @@ public class GravityModel {
     }
 
     public double getMajorA(Body player, Body object, double distance) {        //this will not always be the major but for now this is good.
-        major = distance * (object.getMass() / (player.getMass() + object.getMass()));
+        major = distance * (player.getMass() / (player.getMass() + object.getMass()));
         return major;
     }
 
@@ -123,19 +123,30 @@ public class GravityModel {
     }
 
     public double getOrbitalV(double gravParam, double major, double distance) {
-        if (distance > -1 && distance < 0) {
-            distance = -0.01;
+/*        if (distance > -1 && distance < 0) {
+            distance = -1;
         } else if (distance >= 0 && distance < 1) {
-            distance = 0.01;
-        }
+            distance = 1;
+        }*/
         orbitalV = Math.sqrt((gravParam * ((2/distance)-(1-major))));
         return orbitalV;
     }
 
-    public double getEcc(double major, double minor) {
+    public double getEcc(double major, double minor) {              //this needs to control the angle of the orbit
         ecc = Math.sqrt((1-((minor * minor)/(major * major))));
         return ecc;
     }
+
+    public void setEcc(double newEcc) {
+        ecc = newEcc;
+    }
+
+
+
+
+
+    //this.pos.x = cos(this.tau)*this.a*(cos(E)-this.e);
+    //this.pos.y = (sin(i*PI/180))*cos(this.tau)*this.a*(sqrt(1-pow(this.e, 2))*sin(E));
 
 
 
