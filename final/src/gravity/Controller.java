@@ -23,7 +23,6 @@ public class Controller implements EventHandler<KeyEvent> {
     final private double FRAMES_PER_SECOND = 20.0;
 
     //    @FXML private GravityView gravityView;
-    private GravityView gravityView;
     private GravityModel gravityModel;
 
     @FXML private Body player;
@@ -59,6 +58,12 @@ public class Controller implements EventHandler<KeyEvent> {
     double playerMinor;
     double objectMajor;
     double objectMinor;
+    double playerOrbitCenter;
+    double objectOrbitCenter;
+    double playerXoffset;
+    double playerYoffset;
+    double objectXoffset;
+    double objectYoffset;
 
 
     public Controller() {
@@ -254,18 +259,24 @@ public class Controller implements EventHandler<KeyEvent> {
                 getDistX(playerCenterX, objectCenterX);
                 getDistY(playerCenterY, objectCenterY);
 
+                playerXoffset = playerCenterX;
+                playerYoffset = playerCenterY;
+                objectXoffset = objectCenterX;
+                objectYoffset = objectCenterY;
+
+
                 escV = gravityModel.getVesc(player, object, D);
                 if (player.getVelocityX() > escV) {
-                    player.setVelocityX((player.getVelocityX() / 2));
+                    player.setVelocityX((8));
                 }
                 if (player.getVelocityY() > escV) {
-                    player.setVelocityY((player.getVelocityY() / 2));
+                    player.setVelocityY((8));
                 }
                 if (object.getVelocityX() > escV) {
-                    object.setVelocityX((object.getVelocityX() / 2));
+                    object.setVelocityX((3 * object.getVelocityX() / 4));
                 }
                 if (object.getVelocityY() > escV) {
-                    object.setVelocityY((object.getVelocityY() / 2));
+                    object.setVelocityY((3 * object.getVelocityY() / 4));
                 }
 
                 count = 0;
@@ -274,12 +285,12 @@ public class Controller implements EventHandler<KeyEvent> {
                 double playerRmax = gravityModel.getBaryCenter(player, object, distX);
                 playerMajor = gravityModel.getMajorA(player, object, distX);
                 playerMinor = gravityModel.getMinorB(playerRmax, playerMajor, gravityModel.getEcc());
-                double playerOrbitCenter = Math.abs(playerRmax - playerMajor);
+                playerOrbitCenter = Math.abs(playerRmax - playerMajor);
 
                 double objectRmax = gravityModel.getBaryCenter(object, player, distX);
                 objectMajor = gravityModel.getMajorA(object, player, distX);
-                objectMinor = gravityModel.getMinorB(objectRmax, objectMajor, distX);
-                double objectOrbitCenter = Math.abs(objectRmax - objectMajor);
+                objectMinor = gravityModel.getMinorB(objectRmax, objectMajor, gravityModel.getEcc());
+                objectOrbitCenter = Math.abs(objectRmax - objectMajor);
 
                 player.setAccelY(0);
                 player.setAccelX(0);
@@ -291,9 +302,14 @@ public class Controller implements EventHandler<KeyEvent> {
             eccLabel.setText(String.format("Eccentricty: %f", gravityModel.getEcc()));
             double gravParam = gravityModel.getGravParam(player, object);
 
-            setPosition(player, (gravityModel.getPosX(getCountercount(), playerMajor) + playerCenterX), (gravityModel.getPosY(getCountercount(), playerMinor) + playerCenterY));
-            setPosition(object, (gravityModel.getPosX(getCountercount(), objectMajor) + objectCenterX), (gravityModel.getPosY(getCountercount(), objectMinor) + objectCenterY));
+//            setPosition(player, (gravityModel.getPosX(getCountercount(), playerMajor) + playerOrbitCenter), (gravityModel.getPosY(getCountercount(), playerMinor) - playerOrbitCenter));
+//            setPosition(object, (gravityModel.getPosX(getCountercount(), objectMajor) + objectOrbitCenter), (gravityModel.getPosY(getCountercount(), objectMinor) - objectOrbitCenter));
 
+            setPosition(player, (gravityModel.getPosX(getCountercount(), playerMajor) + playerXoffset), (gravityModel.getPosY(getCountercount(), playerMinor) + playerYoffset));
+            setPosition(object, (gravityModel.getPosX(getCountercount(), -objectMajor) + objectXoffset), (gravityModel.getPosY(getCountercount(), -objectMinor) + objectYoffset));
+
+            //Needs to include gravity to change velocity and to have the object start opposite to the player
+            //With their
 
             increment();
             //orbiting ends here

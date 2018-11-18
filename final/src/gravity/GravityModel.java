@@ -27,11 +27,9 @@ public class GravityModel {
     private double orbitalV;
     private double ecc = 0.5;
 
+//    textfield.getText();
+
     public GravityModel() {
-
-    }
-
-    public void update(GravityView view) {
 
     }
 
@@ -116,17 +114,9 @@ public class GravityModel {
     }
 
     public double getPosY(double t, double minor) {
-        double posY = minor * Math.sin(t);
+        double posY = minor * Math.sin(-t);
         return posY;
     }
-
-
-
-
-
-    //this.pos.x = cos(this.tau)*this.a*(cos(E)-this.e);
-    //this.pos.y = (sin(i*PI/180))*cos(this.tau)*this.a*(sqrt(1-pow(this.e, 2))*sin(E));
-
 
 
 }

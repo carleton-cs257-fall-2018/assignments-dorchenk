@@ -5,7 +5,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
-<?import gravity.GravityView?>
+<!--<?import gravity.GravityView?>-->
 <?import gravity.Body?>
 <AnchorPane fx:controller="gravity.Controller" xmlns:fx="http://javafx.com/fxml">
 
@@ -14,44 +14,40 @@
     <Button fx:id="orbitButton" text="Orbit" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="5" onAction="#onOrbitButton"/>
     <Button fx:id="bounceButton" text="Bounce" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="30" onAction="#onBounceButton"/>
 
-    <Label fx:id="playerVX" AnchorPane.leftAnchor="200" AnchorPane.topAnchor="5" style="-fx-font-size: 100%"/>
-    <Label fx:id="playerVY" AnchorPane.leftAnchor="320" AnchorPane.topAnchor="5" style="-fx-font-size: 100%"/>
-    <Label fx:id="playerAX" AnchorPane.leftAnchor="200" AnchorPane.topAnchor="30" style="-fx-font-size: 100%"/>
-    <Label fx:id="playerAY" AnchorPane.leftAnchor="320" AnchorPane.topAnchor="30" style="-fx-font-size: 100%"/>
+    <Label AnchorPane.leftAnchor="210" AnchorPane.topAnchor="10" style="-fx-font-size: 100%"
+           text="Player" />
+    <TextField id="playermass" fx:id="playerMass" layoutX="270" layoutY="-10" />
 
-    <Label fx:id="objectVX" AnchorPane.leftAnchor="440" AnchorPane.topAnchor="5" style="-fx-font-size: 100%"/>
-    <Label fx:id="objectVY" AnchorPane.leftAnchor="560" AnchorPane.topAnchor="5" style="-fx-font-size: 100%"/>
-    <Label fx:id="objectAX" AnchorPane.leftAnchor="440" AnchorPane.topAnchor="30" style="-fx-font-size: 100%"/>
-    <Label fx:id="objectAY" AnchorPane.leftAnchor="560" AnchorPane.topAnchor="30" style="-fx-font-size: 100%"/>
+    <Label fx:id="playerVX" AnchorPane.leftAnchor="200" AnchorPane.topAnchor="25" style="-fx-font-size: 90%"/>
+    <Label fx:id="playerVY" AnchorPane.leftAnchor="320" AnchorPane.topAnchor="25" style="-fx-font-size: 90%"/>
+    <Label fx:id="playerAX" AnchorPane.leftAnchor="200" AnchorPane.topAnchor="40" style="-fx-font-size: 90%"/>
+    <Label fx:id="playerAY" AnchorPane.leftAnchor="320" AnchorPane.topAnchor="40" style="-fx-font-size: 90%"/>
+
+    <Label AnchorPane.leftAnchor="430" AnchorPane.topAnchor="10" style="-fx-font-size: 100%"
+           text="Object" />
+    <Label fx:id="objectVX" AnchorPane.leftAnchor="440" AnchorPane.topAnchor="25" style="-fx-font-size: 90%"/>
+    <Label fx:id="objectVY" AnchorPane.leftAnchor="560" AnchorPane.topAnchor="25" style="-fx-font-size: 90%"/>
+    <Label fx:id="objectAX" AnchorPane.leftAnchor="440" AnchorPane.topAnchor="40" style="-fx-font-size: 90%"/>
+    <Label fx:id="objectAY" AnchorPane.leftAnchor="560" AnchorPane.topAnchor="40" style="-fx-font-size: 90%"/>
 
     <Label fx:id="eccLabel" AnchorPane.leftAnchor="680" AnchorPane.topAnchor="30" style="-fx-font-size: 100%"/>
 
     <!--<Slider fx:id="playerMass" blockIncrement="1" layoutX="100" layoutY="15" majorTickUnit="5" max="50" minorTickCount="1" showTickLabels="true" showTickMarks="true" onAction="#onPlayerMass" />-->
     <!--<TextField fx:id="textField" layoutX="100.0" layoutY="99.0" prefHeight="25.0" prefWidth="75.0" />-->
 
-    <!--<Label fx:id="scoreLabel" AnchorPane.leftAnchor="120" AnchorPane.topAnchor="15" />-->
 
-    <!--Include a line that enables user to enter masses-->
 
     <AnchorPane fx:id="gameBoard"
-          AnchorPane.topAnchor="60" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="20"
+          AnchorPane.topAnchor="80" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="20"
                 style="-fx-background-color:black; -fx-border-color:white; -fx-border-width:1px 0px 1px 0px;">
           <!--style="-fx-background-color: #bbb; -fx-border-color:black; -fx-border-width:1px 0px 1px 0px;">-->
-        <!--<GravityView fx:id="gravityView"-->
-        <!--<Body fx:id="object2" layoutX="375" layoutY="300" radius="5" fill="green" velocityX="-0.1" velocityY="-0.1" mass="100000"/>-->
-        <Body fx:id="object" layoutX="275" layoutY="300" radius="5" fill="red" velocityX="0.1" velocityY="-0.1" mass="10"/>
-        <Body fx:id="player" layoutX="325" layoutY="350" radius="5" fill="white" velocityX="-0" velocityY="-0" mass="10"/>
-        <!--</GravityView>-->
+
+        <Body fx:id="object" layoutX="275" layoutY="300" radius="5" fill="red" velocityX="0.1" velocityY="-0.1" mass="100000"/>
+        <Body fx:id="player" layoutX="325" layoutY="350" radius="5" fill="white" velocityX="-0" velocityY="-0" mass="100000000"/>
     </AnchorPane>
 
-    <!--<AnchorPane fx:gravityView="gravity.GravityView"-->
-    <!--<AnchorPane fx:id="view"-->
-        <!--AnchorPane.topAnchor="300" AnchorPane.leftAnchor="300" AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10"-->
-        <!--style="-fx-background-color: #bbb; -fx-border-color:black; -fx-border-width:1px 0px 1px 0px;">-->
-    <!--</AnchorPane>-->
-    <!--</AnchorPane>-->
 
     <Label AnchorPane.leftAnchor="20" AnchorPane.bottomAnchor="0" style="-fx-font-size: 100%"
-           text="Left: A or left-arrow; Right: D or right-arrow" />
+           text="Up: W/Up; Down: S/Down; Left: A/Left; Right: D/R. Use F and G to stop. White = Player. Press enter to submit changes." />
 
 </AnchorPane>
