@@ -22,7 +22,7 @@ import java.util.TimerTask;
 public class Controller implements EventHandler<KeyEvent> {
     final private double FRAMES_PER_SECOND = 20.0;
 
-//    @FXML private GravityView gravityView;
+    //    @FXML private GravityView gravityView;
     private GravityView gravityView;
     private GravityModel gravityModel;
 
@@ -51,6 +51,14 @@ public class Controller implements EventHandler<KeyEvent> {
     private boolean bounce;
     private boolean firstTime;
 
+    private double distX;
+    private double distY;
+    private int count;
+    private int maxCount;
+    double playerMajor;
+    double playerMinor;
+    double objectMajor;
+    double objectMinor;
 
 
     public Controller() {
@@ -89,7 +97,7 @@ public class Controller implements EventHandler<KeyEvent> {
             }
         };
 
-        long frameTimeInMilliseconds = (long)(1000.0 / FRAMES_PER_SECOND);
+        long frameTimeInMilliseconds = (long) (1000.0 / FRAMES_PER_SECOND);
         this.timer.schedule(timerTask, 0, frameTimeInMilliseconds);
     }
 
@@ -126,6 +134,8 @@ public class Controller implements EventHandler<KeyEvent> {
         this.timer.cancel();
     }
 
+
+    //Create a setter for centers and then in the model use that setter to create and elliptical orbit using the circles and eccentricty
     public double getCenterX(Body body) {
         double centerX = body.getCenterX() + body.getLayoutX();
         return centerX;
@@ -136,46 +146,57 @@ public class Controller implements EventHandler<KeyEvent> {
         return centerY;
     }
 
-    //Create a setter for centers and then in the model use that setter to create and elliptical orbit using the circles and eccentricty
+    public double getDistX(double playerCenterX, double objectCenterX) {
+        distX = (objectCenterX - playerCenterX);
+        return distX;
+    }
+
+    public double getDistY(double playerCenterY, double objectCenterY) {
+        distY = (objectCenterY - playerCenterY);
+        return distY;
+    }
+
+    public void setPosition(Body body, double x, double y) {
+        body.setCenterX(0);
+        body.setCenterY(0);
+        body.setLayoutX(x);
+        body.setLayoutY(y);
+    }
+
+    public void counter(int max) {
+        maxCount = max;
+        count = 0;
+    }
+
+    public void increment() {
+        if (count < maxCount) {
+            count++;
+        } else {
+            count = 0;
+        }
+    }
+
+    public double getCountercount() {
+        return Math.toRadians(count);
+    }
 
 
     private void updateAnimation() {
-        double objectCenterX = this.object.getCenterX() + this.object.getLayoutX();
-        double objectCenterY = this.object.getCenterY() + this.object.getLayoutY();
+        double objectCenterX = getCenterX(this.object);
+        double objectCenterY = getCenterY(this.object);
         double objectRadius = this.object.getRadius();
         //--------------------------------------------------------------------------
         double playerCenterX = getCenterX(this.player);
         double playerCenterY = getCenterY(this.player);
-//        double playerCenterX = this.player.getCenterX() + this.player.getLayoutX();
-//        double playerCenterY = this.player.getCenterY() + this.player.getLayoutY();
         double playerRadius = this.player.getRadius();
 
+        getDistX(playerCenterX, objectCenterX);
+        getDistY(playerCenterY, objectCenterY);
 
-
-        /*if (objectCenterX >= playerCenterX && objectCenterX < playerCenterY && this.object.getVelocityY() > 0) {
-            double objectBottom = objectCenterY + objectRadius;
-            if (objectBottom >= playerRadius) {
-                this.object.setVelocityY(-this.object.getVelocityY());
-                this.score++;
-                this.scoreLabel.setText(String.format("Bounces: %d", this.score));
-            }
-
-        }*/
-
-        //preparation for attempt to apply gravity
-        double distX = (objectCenterX - playerCenterX);
-        double distY = (objectCenterY - playerCenterY);
-
-        if (distX == 0) {
-            distX = 1;
-        } else if (distY == 0) {
-            distY = 1;
-        }
-
-        double D = gravityModel.getDistance(this.player, this.object, distX, distY);
+        double D = gravityModel.getDistance(distX, distY);
         double grav = gravityModel.getForceG(this.player, this.object, D);
         double escV = gravityModel.getVesc(this.player, this.object, D);
-        double escD = gravityModel.getDesc(this.player, this.object);
+        double escD = gravityModel.getDesc(this.player, this.object, escV);
 
         //applying gravity
         if (orbiting == false) {
@@ -208,87 +229,77 @@ public class Controller implements EventHandler<KeyEvent> {
                 }
                 object.setVelocityX((this.object.getVelocityX() + this.object.getAccelX()));
                 object.setVelocityY((this.object.getVelocityY() + this.object.getAccelY()));
-//                double nvox = object.getVelocityX();
-//                double nvoy = object.getVelocityY();
-
+                //--------------------------------------------------------------------------------------------------
                 player.setVelocityX((this.player.getVelocityX() + this.player.getAccelX()));
                 player.setVelocityY((this.player.getVelocityY() + this.player.getAccelY()));
-//                double nvpx = player.getVelocityX();
-//                double nvpy = player.getVelocityY();
             }
         }
 
-        if(orbiting) {
+        if (orbiting) {
             if (firstTime) {
-                player.setVelocityY(-0); //Must move towards each other
-                player.setVelocityX(-0);
-                object.setVelocityX(6);
-                object.setVelocityY(4.5);
+                gravityModel.setEcc(0.5);
+                escV = gravityModel.getVesc(player, object, D);
+                escD = gravityModel.getDesc(player, object, escV);
+
+                if (distX == 0 || Math.abs(distX) > escD) {              //Sets bodies on same X axis
+                    setPosition(object, (escD / 2), playerCenterY);
+                    objectCenterX = getCenterX(this.object);
+                } else if (distY != 0) {
+                    object.setCenterY(0);
+                    object.setLayoutY(playerCenterY);
+                    objectCenterY = getCenterY(this.object);
+                }
+
+
+                getDistX(playerCenterX, objectCenterX);
+                getDistY(playerCenterY, objectCenterY);
+
+                escV = gravityModel.getVesc(player, object, D);
+                if (player.getVelocityX() > escV) {
+                    player.setVelocityX((player.getVelocityX() / 2));
+                }
+                if (player.getVelocityY() > escV) {
+                    player.setVelocityY((player.getVelocityY() / 2));
+                }
+                if (object.getVelocityX() > escV) {
+                    object.setVelocityX((object.getVelocityX() / 2));
+                }
+                if (object.getVelocityY() > escV) {
+                    object.setVelocityY((object.getVelocityY() / 2));
+                }
+
+                count = 0;
+                counter(360);
+
+                double playerRmax = gravityModel.getBaryCenter(player, object, distX);
+                playerMajor = gravityModel.getMajorA(player, object, distX);
+                playerMinor = gravityModel.getMinorB(playerRmax, playerMajor, gravityModel.getEcc());
+                double playerOrbitCenter = Math.abs(playerRmax - playerMajor);
+
+                double objectRmax = gravityModel.getBaryCenter(object, player, distX);
+                objectMajor = gravityModel.getMajorA(object, player, distX);
+                objectMinor = gravityModel.getMinorB(objectRmax, objectMajor, distX);
+                double objectOrbitCenter = Math.abs(objectRmax - objectMajor);
+
                 player.setAccelY(0);
                 player.setAccelX(0);
-                object.setAccelX(2);
-                object.setAccelY(2);
+                object.setAccelX(0);
+                object.setAccelY(0);
                 this.firstTime = false;
             }
 
-
-           /* if(D > escD) {
-                object.setLayoutX(playerCenterX + (distX / escD));
-                object.setLayoutY(playerCenterY + (distY / escD));
-                object.setCenterX(0);
-                object.setCenterY(0);
-                objectCenterX = this.object.getCenterX() + this.object.getLayoutX();
-                objectCenterY = this.object.getCenterY() + this.object.getLayoutY();
-            }*/
-
-            distX = (objectCenterX - playerCenterX);
-            distY = (objectCenterY - playerCenterY);
-
-            D = gravityModel.getDistance(this.player, this.object, distX, distY);
-
-//            double grav2 = gravityModel.getForceG(this.player, this.object, D);
-            double grav2 = 0;
+            eccLabel.setText(String.format("Eccentricty: %f", gravityModel.getEcc()));
             double gravParam = gravityModel.getGravParam(player, object);
-            double major = gravityModel.getMajorA(player, object, D);
-            double minor = gravityModel.getMajorA(object, player, D);
-//            double minor = gravityModel.getMinorB(D, major);
-            double ecc = gravityModel.getEcc(major, minor); //to show on screen
-            eccLabel.setText(String.format("Eccentricty: %f", ecc));
-            double vel = gravityModel.getOrbitalV(gravParam, major, D);
-            double velX = gravityModel.getOrbitalV(gravParam, major, distX);
-            double velY = gravityModel.getOrbitalV(gravParam, major, distY);
-            double xo = gravityModel.getOrbitalV(gravParam, major, D);
-            double yo = gravityModel.getOrbitalV(gravParam, major, D);
 
-            if (distX < 0) { //then object is to the left and needs to be pulled to the right
-                object.setAccelX(xo+grav2);
-                player.setAccelX((-1) * (grav2));
-                if (distY < 0) { //then according to this model object is above and needs to be pulled down
-                    object.setAccelY((yo+grav2));
-                    player.setAccelY((-grav2));
-                } else { //pull object up
-                    object.setAccelY((-1) * (yo+grav2));
-                    player.setAccelY((grav2));
-                }
-            } else { //for when the object is to the right of player and needs to be pulled left
-                object.setAccelX((-1) * (xo+grav2));
-                player.setAccelX((grav2));
-                if (distY < 0) { //then according to this model object is above and needs to be pulled down
-                    object.setAccelY((yo+grav2));
-                    player.setAccelY((-1) * (grav2));
-                } else { //pull object up
-                    object.setAccelY((-1) * (yo + grav2));
-                    player.setAccelY((grav2));
-                }
-            }
-            player.setVelocityX((this.player.getVelocityX() + this.player.getAccelX()));
-            player.setVelocityY((this.player.getVelocityY() + this.player.getAccelY()));
-//            player.setVelocityX(0);
-//            player.setVelocityY(0);
-            object.setVelocityX((this.object.getVelocityX() + this.object.getAccelX()));
-            object.setVelocityY((this.object.getVelocityY() + this.object.getAccelY()));
+            setPosition(player, (gravityModel.getPosX(getCountercount(), playerMajor) + playerCenterX), (gravityModel.getPosY(getCountercount(), playerMinor) + playerCenterY));
+            setPosition(object, (gravityModel.getPosX(getCountercount(), objectMajor) + objectCenterX), (gravityModel.getPosY(getCountercount(), objectMinor) + objectCenterY));
 
+
+            increment();
+            //orbiting ends here
         }
+
+
 
         //bounce for object
         if(bounce) {
@@ -322,26 +333,22 @@ public class Controller implements EventHandler<KeyEvent> {
             //end bounce for player
         }
 
-        //-----------------------------------------------------------------Update labels here
-        //        double vpx = player.getVelocityX();
-//         double vpy = player.getVelocityY();
-//        double vox = object.getVelocityX();
-//        double voy = object.getVelocityY();
-        playerVX.setText(String.format("VelocityX: %f",  player.getVelocityX()));
-        playerVY.setText(String.format("VelocityY: %f",  player.getVelocityY()));
-        playerAX.setText(String.format("AccelX: %f",  player.getAccelX()));
-        playerAY.setText(String.format("AccelY: %f",  player.getAccelY()));
-        objectVX.setText(String.format("VelocityX: %f", object.getVelocityX()));
-        objectVY.setText(String.format("VelocityY: %f", object.getVelocityY()));
-        objectAX.setText(String.format("AccelX: %f", object.getAccelX()));
-        objectAY.setText(String.format("AccelY: %f", object.getAccelY()));
+    //-----------------------------------------------------------------Update labels here
+        playerVX.setText(String.format("VelocityX: %f",player.getVelocityX()));
+        playerVY.setText(String.format("VelocityY: %f",player.getVelocityY()));
+        playerAX.setText(String.format("AccelX: %f",player.getAccelX()));
+        playerAY.setText(String.format("AccelY: %f",player.getAccelY()));
+        objectVX.setText(String.format("VelocityX: %f",object.getVelocityX()));
+        objectVY.setText(String.format("VelocityY: %f",object.getVelocityY()));
+        objectAX.setText(String.format("AccelX: %f",object.getAccelX()));
+        objectAY.setText(String.format("AccelY: %f",object.getAccelY()));
 
 
-        // Move the sprite. ------------------------------------------------------Interesting
-
+    // Move the sprite. ------------------------------------------------------Interesting
         this.object.step();
         this.player.step();
     }
+
 
 
     @Override

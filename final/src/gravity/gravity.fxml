@@ -39,8 +39,8 @@
           <!--style="-fx-background-color: #bbb; -fx-border-color:black; -fx-border-width:1px 0px 1px 0px;">-->
         <!--<GravityView fx:id="gravityView"-->
         <!--<Body fx:id="object2" layoutX="375" layoutY="300" radius="5" fill="green" velocityX="-0.1" velocityY="-0.1" mass="100000"/>-->
-        <Body fx:id="object" layoutX="275" layoutY="300" radius="5" fill="red" velocityX="0.1" velocityY="-0.1" mass="100000"/>
-        <Body fx:id="player" layoutX="325" layoutY="350" radius="5" fill="white" velocityX="-0" velocityY="-0" mass="10000000"/>
+        <Body fx:id="object" layoutX="275" layoutY="300" radius="5" fill="red" velocityX="0.1" velocityY="-0.1" mass="10"/>
+        <Body fx:id="player" layoutX="325" layoutY="350" radius="5" fill="white" velocityX="-0" velocityY="-0" mass="10"/>
         <!--</GravityView>-->
     </AnchorPane>
 
