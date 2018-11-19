@@ -17,6 +17,11 @@ Gravity model - get Distance, forceofGravity, getTotal mass, hopefully this does
 Object - methods include velocity, acceleration, getMass, here the results of gravity model will be passed in to manipulate our objects
 Effects - creates actual interface/“board”, we will be able to see the animated changes for our Objects
 
+----
+
+Final submission comments:
+
+We'll start with things that we tried to implement that did not fully work. We tried to implement a third mass functionality, but it proved to be too difficult to understand how the masses would interact with each other. When I did add it, they moved sporadically. I was using online physics simulators to see how they should behave, but none of my efforts to change the program helped me reach our goal. We've left the code in the body of "ThirdButton," not as waste, but hopefully to gain inspiration at some later time if we want to try to fix it later. Also, some bugs remain in the Orbit button. The objects orbit around different spots in the orbit and is not shown the way we would like it to. This could be related to the way we present the objects/masses, but other than that we feel that this program reached our initial goals.
 
 
 
