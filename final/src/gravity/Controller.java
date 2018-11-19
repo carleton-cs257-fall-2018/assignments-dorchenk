@@ -11,18 +11,15 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
+
 import java.lang.Math;
-
-import java.util.List;
-import java.util.ArrayList;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Controller implements EventHandler<KeyEvent> {
     final private double FRAMES_PER_SECOND = 20.0;
 
-    //    @FXML private GravityView gravityView;
     private GravityModel gravityModel;
 
     @FXML private Body player;
@@ -36,7 +33,7 @@ public class Controller implements EventHandler<KeyEvent> {
     @FXML private Label objectVY;
     @FXML private Label objectAX;
     @FXML private Label objectAY;
-
+    //Consider a label for force of gravity ----------------------------------------------------------------------------
     @FXML private Label eccLabel;
 
     @FXML private AnchorPane gameBoard;
@@ -44,6 +41,12 @@ public class Controller implements EventHandler<KeyEvent> {
     @FXML private Button resetButton;
     @FXML private Button orbitButton;
     @FXML private Button bounceButton;
+    @FXML private Button updateButton;
+
+    @FXML private TextField playerMass;
+    @FXML private TextField objectMass;
+    @FXML private TextField eccField;
+
     private boolean paused;
     private boolean reset;
     private boolean orbiting;
@@ -78,16 +81,18 @@ public class Controller implements EventHandler<KeyEvent> {
 
     public void initialize() {
         this.startTimer();
-//        this.gravityView = new GravityView();
         this.gravityModel = new GravityModel();
         this.update();
     }
 
 
     private void update() {
-        //Maybe update the anchorpane labels here Hmmmmmmmmm
-
-        double massPlayer = this.player.getMass();
+        player.setMass(Double.valueOf(playerMass.getText()));
+        player.getMass();
+        object.setMass(Double.valueOf(objectMass.getText()));
+        object.getMass();
+        gravityModel.setEcc(Double.valueOf(eccField.getText()));
+        this.firstTime = true;
     }
 
     private void startTimer() {
@@ -125,7 +130,6 @@ public class Controller implements EventHandler<KeyEvent> {
         object.setLayoutX(275);
         object.setLayoutY(300);
 
-        //Would be better if I could figure out how to call Controller()
         this.paused = false;
         this.reset = false;
         this.orbiting = false;
@@ -140,7 +144,6 @@ public class Controller implements EventHandler<KeyEvent> {
     }
 
 
-    //Create a setter for centers and then in the model use that setter to create and elliptical orbit using the circles and eccentricty
     public double getCenterX(Body body) {
         double centerX = body.getCenterX() + body.getLayoutX();
         return centerX;
@@ -216,11 +219,6 @@ public class Controller implements EventHandler<KeyEvent> {
                         object.setAccelY((-1) * (grav));
                         player.setAccelY((grav));
                     }
-             /*   } else if (distX == 0 && distY == 0) {      //Merger happens?? Woah... //consider smaller Body's accel becoming = to the larger Bodys accel
-                    object.setAccelY((0));
-                    player.setAccelY((0));
-                    double bMass = gravityModel.getLargerMass(player, object); //Just take larger velocity
-                  */
                 } else { //for when the object is to the right of player and needs to be pulled left
                     object.setAccelX((-1) * (grav));
                     player.setAccelX((grav));
@@ -242,7 +240,7 @@ public class Controller implements EventHandler<KeyEvent> {
 
         if (orbiting) {
             if (firstTime) {
-                gravityModel.setEcc(0.5);
+                gravityModel.getEcc();
                 escV = gravityModel.getVesc(player, object, D);
                 escD = gravityModel.getDesc(player, object, escV);
 
@@ -299,17 +297,13 @@ public class Controller implements EventHandler<KeyEvent> {
                 this.firstTime = false;
             }
 
+            //Chosen to be here so that the user can infer that eccentricity does nothing if Orbit != True
             eccLabel.setText(String.format("Eccentricty: %f", gravityModel.getEcc()));
-            double gravParam = gravityModel.getGravParam(player, object);
-
-//            setPosition(player, (gravityModel.getPosX(getCountercount(), playerMajor) + playerOrbitCenter), (gravityModel.getPosY(getCountercount(), playerMinor) - playerOrbitCenter));
-//            setPosition(object, (gravityModel.getPosX(getCountercount(), objectMajor) + objectOrbitCenter), (gravityModel.getPosY(getCountercount(), objectMinor) - objectOrbitCenter));
 
             setPosition(player, (gravityModel.getPosX(getCountercount(), playerMajor) + playerXoffset), (gravityModel.getPosY(getCountercount(), playerMinor) + playerYoffset));
             setPosition(object, (gravityModel.getPosX(getCountercount(), -objectMajor) + objectXoffset), (gravityModel.getPosY(getCountercount(), -objectMinor) + objectYoffset));
 
-            //Needs to include gravity to change velocity and to have the object start opposite to the player
-            //With their
+            //They orbit around different centers of mass. This makes me sad.
 
             increment();
             //orbiting ends here
@@ -375,7 +369,6 @@ public class Controller implements EventHandler<KeyEvent> {
         double playerAccelX = this.player.getAccelX();
         double playerAccelY = this.player.getAccelY();
 
-
         if (code == KeyCode.LEFT || code == KeyCode.A) {
             // move player left
             double newAccel = playerAccelX - 2;
@@ -404,7 +397,7 @@ public class Controller implements EventHandler<KeyEvent> {
             player.setAccelY(0);
             keyEvent.consume();
         } else if (code == KeyCode.G) {
-            //stop player motion!
+            //stop object motion!
             object.setVelocityX(0);
             object.setVelocityY(0);
             object.setAccelX(0);
@@ -458,11 +451,9 @@ public class Controller implements EventHandler<KeyEvent> {
         this.bounce = !this.bounce;
     }
 
-
-    /*public void onPlayerMass(ActionEvent actionEvent) {
-        if (this.massPlayer != player.getMass()) {
-            player.setMass(this.massPlayer);
-        }
+    public void onUpdateButton(ActionEvent actionEvent) {
+        this.updateButton.setText("Update");
+        this.update();
     }
-*/
+
 }

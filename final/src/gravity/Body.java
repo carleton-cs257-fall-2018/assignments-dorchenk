@@ -1,28 +1,21 @@
 /**
- * Ball.java
- * Jeff Ondich, 10/29/14.
+ * Body.java
+ * Kellen Dorchen, 11/18/18.
  *
- * A sample subclass of Sprite for CS257.
+ * A subclass for gravity package.
  */
 package gravity;
 
 import javafx.fxml.FXML;
 import javafx.scene.shape.Circle;
 
-//This Bodys velocity will be change by the players force of gravity (a constant)
-//initialize as zero.
-
 public class Body extends Circle {
-    @FXML private double velocityX; //updates based on accel but this is initial ... consider making this zero // controller can update??
+    @FXML private double velocityX;
     @FXML private double velocityY;
-    @FXML private double mass; //this will come from fxml or controller
-    private double accelX = 0; //might update based on controller
-    private double accelY = 0; //
+    private double mass = 0;
+    private double accelX = 0;
+    private double accelY = 0;
 
-
-    public Body() {
-
-    }
 
     public void step() {
         this.setCenterX(this.getCenterX() + this.velocityX);
@@ -52,12 +45,10 @@ public class Body extends Circle {
     }
 
     public double getMass() {
-        this.mass = mass;
         return this.mass;
     }
 
     public double getAccelX() {
-        this.accelX = accelX;
         return this.accelX;
     }
 
@@ -66,7 +57,6 @@ public class Body extends Circle {
     }
 
     public double getAccelY() {
-        this.accelY = accelY;
         return this.accelY;
     }
 

@@ -15,7 +15,7 @@ import java.lang.Math;
 public class GravityModel {
 
     private double distance;
-    private double G = 0.0000000000667; //take input later on!
+    private double G = 0.0000000000667;
     private double totalMass;
     private double forceG;
     private double desc;
@@ -26,12 +26,6 @@ public class GravityModel {
     private double minor;
     private double orbitalV;
     private double ecc = 0.5;
-
-//    textfield.getText();
-
-    public GravityModel() {
-
-    }
 
     public double getDistance(double distX, double distY) {
         this.distance = Math.sqrt((distX * distX) + (distY * distY));
